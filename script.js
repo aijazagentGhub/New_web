@@ -1,78 +1,96 @@
-const newsGrid = document.getElementById('newsGrid');
-const toolsGrid = document.getElementById('toolsGrid');
-const exportBtn = document.getElementById('exportBtn');
-
-// TOP 6 NEWS FOR APRIL 25, 2026
+// TOP 6 NEWS DATA (April 25, 2026)
 const newsData = [
-    { title: "Merck Signs $1B AI Deal", brief: "Merck officially partnered with Google Cloud today to deploy Gemini Enterprise across R&D and manufacturing. The deal involves 75,000 employees and focuses on autonomous R&D agents.", url: "https://itbrief.com.au/story/merck-signs-usd-1-billion-ai-deal-with-google-cloud", date: "2026-04-25" },
-    { title: "XPENG 'Physical AI' Ecosystem", brief: "At Auto China 2026 today, XPENG unveiled the GX Robotaxi and IRON humanoid robot. Powered by Turing chips (3,000 TOPS), it marks a shift to end-to-end autonomous urban robotics.", url: "https://www.manilatimes.net/2026/04/25/tmt-newswire/pr-newswire/ai-transforms-the-world-xpeng-showcases-its-full-stack-physical-ai-ecosystem-at-auto-china-2026/2328312", date: "2026-04-25" },
-    { title: "Anthropic 'Mythos' Bank Alert", brief: "Emergency security audits are underway in the BFSI sector following reports that Anthropic's 'Mythos' model can autonomously exploit legacy banking protocols and mainframe bugs.", url: "https://www.livemint.com/news/india/anthropic-mythos-security-alert-2026", date: "2026-04-25" },
-    { title: "Tesla $25B AI Infrastructure", brief: "Tesla confirmed it is scaling capital expenditure to $25B by year-end. The spend is focused entirely on the Dojo supercomputer and humanoid production lines in Texas and China.", url: "https://enterpriseai.economictimes.indiatimes.com/news/industry/teslas-bold-25-billion-investment-plan", date: "2026-04-24" },
-    { title: "Nvidia Rolls Out Codex Agent", brief: "Nvidia began the global rollout of its OpenAI-powered Codex agents to all employees today, aiming to automate 40% of internal engineering workflows and software testing by year-end.", url: "https://m.economictimes.com/tech/artificial-intelligence/nvidia-rolls-out-openais-codex", date: "2026-04-24" },
-    { title: "AI Engineering Surge in India", brief: "LinkedIn reported a 60% Y-O-Y jump in AI engineering roles in India today. Bengaluru and Hyderabad remain the primary hubs as demand shifts from pilot programs to full-scale execution.", url: "https://ianslive.in/ai-engineering-hiring-in-india-jumps-595-pc-as-demand-spreads-beyond-metros", date: "2026-04-24" }
+    { title: "Anthropic 'Mythos' Bank Alert", brief: "Indian Finance Ministry issued emergency security protocols today for banks. 'Mythos' models found capable of exploiting legacy mainframe vulnerabilities common in nationalized banks.", url: "https://www.livemint.com/bfsi/security-2026", date: "2026-04-25" },
+    { title: "Merck Signs $1B AI Deal", brief: "Merck officially partnered with Google Cloud today to deploy Gemini Enterprise across R&D and manufacturing. The deal focuses on autonomous R&D agents.", url: "https://itbrief.com.au/merck-google-deal", date: "2026-04-25" },
+    { title: "XPENG 'Physical AI' Launch", brief: "XPENG unveiled the GX Robotaxi and IRON humanoid robot today in Beijing. Powered by Turing chips (3,000 TOPS) for end-to-end autonomous mobility.", url: "https://www.xpeng.com/auto-china-2026", date: "2026-04-25" },
+    { title: "Nvidia Hits $5T Market Cap", brief: "Nvidia valuation holds at $5.1T as global cloud providers rush to secure the Blackwell-Ultra hardware needed for next-gen agentic workflows.", url: "https://m.economictimes.com/tech/nvidia-cap", date: "2026-04-25" },
+    { title: "Meta & Microsoft Workforce Pivot", brief: "Both giants confirmed massive capital reallocation today, cutting operational roles to fund 'Energy-for-AI' infrastructure projects.", url: "https://www.bloomberg.com/tech/pivots", date: "2026-04-25" },
+    { title: "OpenAI GPT-5.5 'Agentic' Layer", brief: "OpenAI's latest release features a native 'Action Engine' that allows models to execute software tasks across enterprise tools autonomously.", url: "https://openai.com/gpt-5-5-launch", date: "2026-04-24" }
 ];
 
-// TOP AI TOOLS (Tab 2)
+// COMPREHENSIVE AI TOOLS DIRECTORY
 const toolsData = [
-    { name: "Claude 4.5 Opus", usage: "Exceptional for long-form analysis, complex BFSI reasoning, and policy drafting. Zero-hallucination research mode.", type: "LLM / Reasoning" },
-    { name: "Cursor AI", usage: "An IDE designed for senior engineers. It maps entire codebases to suggest refactors and automate repetitive boilerplate.", type: "Development" },
-    { name: "n8n (Agentic)", usage: "Self-hosted automation for building AI agents that manage Jira, Slack, and email while keeping data on-premise.", type: "Automation" },
-    { name: "Perplexity Deep Research", usage: "Generates 20-page market intelligence reports with live citations. Essential for tech leadership research.", type: "Intelligence" },
-    { name: "v0 by Vercel", usage: "Generates high-fidelity UI components from text. Best for Product Owners building rapid prototypes for stakeholders.", type: "UI/UX" },
-    { name: "Fathom AI", usage: "Auto-records meetings and generates action items. Essential for Lead Scrum Masters to track sprint commits.", type: "Productivity" }
+    { name: "Mythos BFSI API", usage: "Newest Launch: Specialized API for stress-testing banking mainframe security against agentic intrusion.", category: "Security / BFSI", status: "New Launch" },
+    { name: "Claude 4.5 Opus", usage: "High-reasoning LLM for long-document analysis and regulatory compliance auditing.", category: "LLM / Reasoning", status: "Active" },
+    { name: "Cursor AI", usage: "AI-native code editor for senior engineers. Maps entire repos for architectural refactoring.", category: "Engineering", status: "Active" },
+    { name: "n8n (Agentic)", usage: "Self-hosted workflow automation to build multi-agent AI systems for JIRA and Slack.", category: "Automation", status: "Active" },
+    { name: "Perplexity Deep Research", usage: "Generates cited 20-page market intelligence reports on any stock or technology trend.", category: "Intelligence", status: "Active" },
+    { name: "v0 by Vercel", usage: "Generates high-fidelity React UI components from text or screenshots. Best for Product Owners.", category: "UI/UX", status: "Active" },
+    { name: "Fireflies.ai", usage: "Automated meeting transcription and action-item extraction for Scrum Masters.", category: "Productivity", status: "Active" },
+    { name: "Llama 3.2 (Local)", usage: "Open-source model for local hosting on Mac/Docker to protect proprietary bank data.", category: "Open Source", status: "Active" }
 ];
 
 function renderAll() {
-    newsGrid.innerHTML = newsData.map(item => `
-        <article class="card">
+    // Render News
+    document.getElementById('newsGrid').innerHTML = newsData.map(item => `
+        <div class="card">
             <div><h2 class="card-title">${item.title}</h2><p class="card-brief">${item.brief}</p></div>
             <div class="card-footer"><span class="date-badge">${item.date}</span><a href="${item.url}" target="_blank" class="btn-view">READ ↗</a></div>
-        </article>
+        </div>
     `).join('');
 
-    toolsGrid.innerHTML = toolsData.map(tool => `
-        <article class="card">
-            <div>
-                <span class="type-tag">${tool.type}</span>
-                <h2 class="card-title" style="margin-top:10px;">${tool.name}</h2>
-                <p class="card-brief">${tool.usage}</p>
-            </div>
-            <div class="card-footer"><button class="btn-view" style="width:100%">LAUNCH TOOL</button></div>
-        </article>
+    // Render Tools (Latest Tool on top row, rest categorized)
+    const latest = toolsData.find(t => t.status === "New Launch");
+    document.getElementById('latestToolRow').innerHTML = `
+        <div class="tool-row latest">
+            <span class="type-tag">NEWEST LAUNCH</span>
+            <div class="tool-info"><strong>${latest.name}</strong> — ${latest.usage}</div>
+        </div>
+    `;
+
+    const categories = [...new Set(toolsData.map(t => t.category))];
+    document.getElementById('toolsCategorized').innerHTML = categories.map(cat => `
+        <div class="tool-section">
+            <h3 class="section-title">${cat}</h3>
+            <table class="tool-table">
+                ${toolsData.filter(t => t.category === cat && t.status !== "New Launch").map(t => `
+                    <tr><td width="30%"><strong>${t.name}</strong></td><td>${t.usage}</td></tr>
+                `).join('')}
+            </table>
+        </div>
     `).join('');
 }
 
-window.switchTab = (tabName) => {
+window.switchTab = (tabName, btn) => {
     document.querySelectorAll('.tab-content, .tab-link').forEach(el => el.classList.remove('active'));
     document.getElementById(tabName + 'Tab').classList.add('active');
-    // Find button based on onclick text
-    Array.from(document.querySelectorAll('.tab-link')).find(btn => btn.innerText.toLowerCase().includes(tabName)).classList.add('active');
-    exportBtn.style.display = tabName === 'news' ? 'block' : 'none';
+    btn.classList.add('active');
+    document.getElementById('exportNewsBtn').style.display = tabName === 'news' ? 'block' : 'none';
+    document.getElementById('exportToolsBtn').style.display = tabName === 'tools' ? 'block' : 'none';
 };
 
 window.addNewTab = () => {
-    const tabName = prompt("Enter Name for New Data Stream:");
+    const tabName = prompt("Name for your new stream:");
     if (tabName) {
         const btn = document.createElement('button');
         btn.className = 'tab-link';
-        btn.innerText = tabName;
+        btn.innerHTML = `${tabName} <span class="rename-icon" onclick="renameTab(event, this)">✎</span>`;
         btn.onclick = () => {
             document.querySelectorAll('.tab-content, .tab-link').forEach(el => el.classList.remove('active'));
             document.getElementById('dynamicTab').classList.add('active');
             btn.classList.add('active');
-            exportBtn.style.display = 'none';
         };
         document.getElementById('tabBar').insertBefore(btn, document.getElementById('addTabBtn'));
     }
 };
 
-exportBtn.onclick = () => {
-    const csv = [["Brief", "URL", "Date"], ...newsData.map(i => [`"${i.brief}"`, i.url, i.date])].map(e => e.join(",")).join("\n");
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `AI_News_Export_${new Date().toISOString().split('T')[0]}.csv`;
-    link.click();
+window.renameTab = (e, icon) => {
+    e.stopPropagation();
+    const btn = icon.parentElement;
+    const newName = prompt("Enter new name for this tab:", btn.innerText.replace('✎', '').trim());
+    if (newName) btn.innerHTML = `${newName} <span class="rename-icon" onclick="renameTab(event, this)">✎</span>`;
 };
+
+// CSV Export for News and Tools
+document.getElementById('exportNewsBtn').onclick = () => exportCSV(newsData, ["Brief", "URL", "Date"], "AI_News");
+document.getElementById('exportToolsBtn').onclick = () => exportCSV(toolsData, ["Name", "Usage", "Category"], "AI_Tools_Directory");
+
+function exportCSV(data, headers, fileName) {
+    const csv = [headers, ...data.map(i => Object.values(i))].map(e => e.join(",")).join("\n");
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+    link.download = `${fileName}_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+}
 
 renderAll();
