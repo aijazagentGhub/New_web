@@ -6,6 +6,7 @@ let tabNames = {}; // Store custom tab names
 document.addEventListener('DOMContentLoaded', function() {
     createTab();
     document.getElementById('addTabBtn').addEventListener('click', createTab);
+    createRenameModal();
 });
 
 function createTab() {
@@ -112,38 +113,116 @@ function switchTab(tabId) {
     activeTabId = tabId;
 }
 
+// Create rename modal dialog
+function createRenameModal() {
+    const modalHTML = `
+        <div id="renameModal" class="rename-modal">
+            <div class="rename-modal-content">
+                <div class="rename-modal-header">
+                    <h3>Rename Tab</h3>
+                    <button class="rename-modal-close" onclick="closeRenameModal()">×</button>
+                </div>
+                <div class="rename-modal-body">
+                    <label for="renameInput">Enter new tab name:</label>
+                    <input type="text" id="renameInput" class="rename-input" placeholder="Type new name..." maxlength="20">
+                    <div class="rename-character-count">
+                        <span id="charCount">0</span>/20 characters
+                    </div>
+                </div>
+                <div class="rename-modal-footer">
+                    <button class="rename-btn-cancel" onclick="closeRenameModal()">Cancel</button>
+                    <button class="rename-btn-save" onclick="saveRename()">Save</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Add character counter
+    const input = document.getElementById('renameInput');
+    input.addEventListener('input', function() {
+        document.getElementById('charCount').textContent = this.value.length;
+    });
+    
+    // Allow Enter key to save
+    input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            saveRename();
+        }
+    });
+}
+
+// Open rename modal
 function renameTab(tabId) {
     const currentName = tabNames[tabId] || `Tab ${tabId}`;
-    const newName = prompt('Enter new tab name:', currentName);
+    const input = document.getElementById('renameInput');
     
-    if (newName === null) return; // User cancelled
-    if (newName.trim() === '') {
+    input.value = currentName;
+    input.focus();
+    input.select();
+    document.getElementById('charCount').textContent = currentName.length;
+    
+    // Store current tab ID for saving
+    window.currentRenameTabId = tabId;
+    
+    // Show modal
+    document.getElementById('renameModal').classList.add('show');
+}
+
+// Save renamed tab
+function saveRename() {
+    const tabId = window.currentRenameTabId;
+    const newName = document.getElementById('renameInput').value.trim();
+    
+    if (newName === '') {
         alert('Tab name cannot be empty!');
         return;
     }
     
-    if (newName.trim().length > 20) {
+    if (newName.length > 20) {
         alert('Tab name must be 20 characters or less!');
         return;
     }
     
     // Update tab name
-    tabNames[tabId] = newName.trim();
+    tabNames[tabId] = newName;
     
     // Update tab button
     const tabBtn = document.getElementById(`btn-${tabId}`);
     if (tabBtn) {
         const nameSpan = tabBtn.querySelector('.tab-name');
-        if (nameSpan) nameSpan.textContent = newName.trim();
+        if (nameSpan) nameSpan.textContent = newName;
     }
     
     // Update tab content heading
     const tabPane = document.getElementById('tab-' + tabId);
     if (tabPane) {
         const heading = tabPane.querySelector('h2');
-        if (heading) heading.textContent = newName.trim();
+        if (heading) heading.textContent = newName;
+        
+        // Update welcome text
+        const para = tabPane.querySelector('p');
+        if (para) para.textContent = `Welcome to ${newName}! This is your new page. Each tab has independent content.`;
     }
+    
+    closeRenameModal();
 }
+
+// Close rename modal
+function closeRenameModal() {
+    document.getElementById('renameModal').classList.remove('show');
+    document.getElementById('renameInput').value = '';
+    document.getElementById('charCount').textContent = '0';
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('renameModal');
+    if (e.target === modal) {
+        closeRenameModal();
+    }
+});
 
 function closeTab(tabId) {
     const tabPane = document.getElementById('tab-' + tabId);
