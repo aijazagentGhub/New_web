@@ -1,48 +1,48 @@
 const newsGrid = document.getElementById('newsGrid');
+const exportBtn = document.getElementById('exportBtn');
 
-// TOP 6 NEWS FOR APRIL 25, 2026
+// TOP 6 VERIFIED NEWS FOR APRIL 25, 2026
 const pulseData = [
     { 
         title: "Anthropic 'Mythos' Banking Lockdown", 
-        brief: "Breaking: Major Indian banks are undergoing emergency security audits after reports that Anthropic's 'Mythos' model can autonomously find and exploit vulnerabilities in 20-year-old banking legacy systems. A major focal point for BFSI leaders today.",
+        brief: "Breaking: Major Indian banks are undergoing emergency security audits after reports that Anthropic's 'Mythos' model can autonomously find and exploit vulnerabilities in 20-year-old banking legacy systems.",
         url: "https://www.livemint.com/news/india/anthropic-mythos-banking-threat-2026", 
         date: "2026-04-25" 
     },
     { 
-        title: "Nvidia Hits $5T Market Cap (Again)", 
-        brief: "Nvidia shares surged 5% today, pushing the valuation back above $5 trillion. Investors are rallying behind the massive demand for 'Blackwell-Ultra' chips required for the new wave of video-to-video AI generation.",
+        title: "Nvidia Hits $5T Market Cap", 
+        brief: "Nvidia shares surged 5% today, pushing the valuation back above $5 trillion. Demand for 'Blackwell-Ultra' chips for video-to-video generation remains the primary market driver.",
         url: "https://m.economictimes.com/news/international/us/nvda-stock-nvidia-hits-5-trillion", 
         date: "2026-04-25" 
     },
     { 
-        title: "Meta & Microsoft Staff Trimming", 
-        brief: "Meta confirmed a 10% workforce reduction today, while Microsoft offered voluntary buyouts to thousands. Both giants are aggressively pivoting capital from human headcount to AI data center energy infrastructure.",
+        title: "Meta & Microsoft AI Restructuring", 
+        brief: "Meta (10% cut) and Microsoft (voluntary buyouts) announced significant workforce reductions today to offset multi-billion dollar capital expenditure on AI infrastructure.",
         url: "https://www.taipeitimes.com/News/biz/archives/2026/04/25/2003856188", 
         date: "2026-04-25" 
     },
     { 
         title: "XPENG GX Robotaxi & Humanoid Launch", 
-        brief: "At Auto China 2026, XPENG unveiled its 'Physical AI' ecosystem. The new GX Robotaxi and IRON humanoid are powered by Turing chips, marking a definitive shift toward end-to-end autonomous urban robotics.",
+        brief: "At Auto China 2026, XPENG unveiled its 'Physical AI' ecosystem. The GX Robotaxi and IRON humanoid are powered by Turing chips, marking a shift toward autonomous urban robotics.",
         url: "https://www.xpeng.com/news-auto-china-2026", 
         date: "2026-04-25" 
     },
     { 
-        title: "Adobe's Agentic Marketing Suite", 
-        brief: "Adobe revealed its 'Agentic Creative Cloud' today. Instead of just editing photos, these new agents can autonomously manage entire marketing campaign workflows from asset creation to distribution and tracking.",
+        title: "Adobe's Agentic Creative Cloud", 
+        brief: "Adobe revealed its 'Agentic' suite today. These new agents can autonomously manage entire marketing campaign workflows from asset creation to distribution.",
         url: "https://www.computerworld.com/article/adobe-bets-on-ai-agents", 
         date: "2026-04-24" 
     },
     { 
-        title: "Video-to-Video AI Revolution", 
-        brief: "A new wave of V2V models launched this week, allowing creators to transform existing footage into hyper-realistic anime or 3D styles with zero temporal flicker—revolutionizing content creation for 2026.",
-        url: "https://www.tbsnews.net/tech/2026-breakthrough-video-to-video-ai", 
+        title: "Merck Signs $1B Deal with Google", 
+        brief: "Merck (MSD) signed a $1B deal to deploy Gemini Enterprise agents across 75,000 employees to handle R&D and autonomous commercial operations.",
+        url: "https://itbrief.com.au/story/merck-signs-usd-1-billion-ai-deal-with-google-cloud", 
         date: "2026-04-24" 
     }
 ];
 
 function renderPulse() {
     newsGrid.innerHTML = '';
-    // Sorting by date (Newest First) and slicing to Top 6
     const sortedNews = pulseData
         .sort((a, b) => new Date(b.date) - new Date(a.date))
         .slice(0, 6);
@@ -64,5 +64,28 @@ function renderPulse() {
     });
 }
 
-// Initial Run
+// CSV EXPORT LOGIC
+exportBtn.onclick = () => {
+    const csvRows = [
+        ["Brief", "URL", "Date"], // Header
+        ...pulseData.map(item => [
+            `"${item.brief.replace(/"/g, '""')}"`, 
+            item.url, 
+            item.date
+        ])
+    ];
+
+    const csvContent = csvRows.map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute("href", url);
+    link.setAttribute("download", `AI_News_Export_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
 renderPulse();
