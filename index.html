@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligence Hub</title>
+    <title>Intelligence Hub | Sky Blue Edition</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -12,11 +12,11 @@
         <header class="main-header">
             <div class="logo-area">
                 <h1>Intelligence <span>Pulse</span></h1>
-                <p class="date-badge" id="currentDay">Saturday, April 25, 2026</p>
+                <p class="date-badge">Saturday, April 25, 2026</p>
             </div>
             <div class="header-actions">
                 <button id="exportNewsBtn" class="glass-btn">📥 Export News</button>
-                <button id="exportToolsBtn" class="glass-btn" style="display:none;">📥 Export Tools List</button>
+                <button id="exportToolsBtn" class="glass-btn" style="display:none;">📥 Export Tools</button>
             </div>
         </header>
 
@@ -32,15 +32,15 @@
 
         <main id="toolsTab" class="tab-content">
             <div class="tools-directory">
-                <div class="latest-launch-banner" id="latestToolRow">
-                    </div>
-                <div id="toolsCategorized">
-                    </div>
+                <div class="latest-launch-banner" id="latestToolRow"></div>
+                <div id="toolsCategorized"></div>
             </div>
         </main>
 
         <main id="dynamicTab" class="tab-content">
-            <div class="news-grid" id="dynamicGrid"></div>
+            <div class="news-grid" id="dynamicGrid">
+                <div class="empty-state">Content for renamed streams will appear here.</div>
+            </div>
         </main>
     </div>
     <script src="script.js"></script>
