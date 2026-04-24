@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Intelligence Hub</title>
+    <title>Intelligence Hub</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -12,17 +12,18 @@
         <header class="main-header">
             <div class="logo-area">
                 <h1>Intelligence <span>Pulse</span></h1>
-                <p class="date-badge">Saturday, April 25, 2026</p>
+                <p class="date-badge" id="currentDay">Saturday, April 25, 2026</p>
             </div>
-            <div id="actionWrapper" class="header-actions">
-                <button id="exportBtn" class="glass-btn">📥 Export News</button>
+            <div class="header-actions">
+                <button id="exportNewsBtn" class="glass-btn">📥 Export News</button>
+                <button id="exportToolsBtn" class="glass-btn" style="display:none;">📥 Export Tools List</button>
             </div>
         </header>
 
         <nav class="tab-navigation" id="tabBar">
-            <button class="tab-link active" onclick="switchTab('news')">Tab 1: NEWS</button>
-            <button class="tab-link" onclick="switchTab('tools')">Tab 2: AI TOOLS</button>
-            <button id="addTabBtn" class="add-tab-btn" onclick="addNewTab()">+ Add Tab</button>
+            <button class="tab-link active" onclick="switchTab('news', this)">Tab 1: NEWS</button>
+            <button class="tab-link" onclick="switchTab('tools', this)">Tab 2: AI TOOLS</button>
+            <button id="addTabBtn" class="add-tab-btn" onclick="addNewTab()">+ Add Stream</button>
         </nav>
 
         <main id="newsTab" class="tab-content active">
@@ -30,13 +31,16 @@
         </main>
 
         <main id="toolsTab" class="tab-content">
-            <div class="tools-grid" id="toolsGrid"></div>
+            <div class="tools-directory">
+                <div class="latest-launch-banner" id="latestToolRow">
+                    </div>
+                <div id="toolsCategorized">
+                    </div>
+            </div>
         </main>
 
         <main id="dynamicTab" class="tab-content">
-            <div class="news-grid" id="dynamicGrid">
-                <div class="empty-state">No content here yet. Use the "Add Tab" feature to create a new stream.</div>
-            </div>
+            <div class="news-grid" id="dynamicGrid"></div>
         </main>
     </div>
     <script src="script.js"></script>
