@@ -1,35 +1,87 @@
 :root {
-    --bg: #0b1120;
-    --card-bg: rgba(30, 41, 59, 0.7);
-    --accent: #38bdf8;
-    --dopamine: linear-gradient(135deg, #0ea5e9, #6366f1);
-    --text: #f8fafc;
+    --bg: #050810;
+    --card-bg: rgba(17, 25, 40, 0.75);
+    --accent: #00d2ff;
+    --dopamine: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+    --text: #ffffff;
+    --border: rgba(255, 255, 255, 0.1);
 }
 
-body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; }
-.sky-container { max-width: 1400px; margin: 0 auto; padding: 40px; }
+body { 
+    background: var(--bg); 
+    color: var(--text); 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    margin: 0;
+    background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #050810 70%);
+}
 
-/* Tabs */
-.tab-navigation { display: flex; gap: 10px; margin-bottom: 30px; }
-.tab-item { background: var(--card-bg); padding: 12px 20px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.1); }
-.tab-item.active { background: var(--dopamine); border: none; }
-.rename-trigger { margin-left: 10px; opacity: 0.8; cursor: pointer; color: #fff; }
+.sky-container { max-width: 1600px; margin: 0 auto; padding: 30px; }
 
-/* News Grid */
-.news-dense-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.dopamine-card { background: var(--card-bg); border-radius: 24px; padding: 25px; border: 1px solid rgba(255,255,255,0.05); min-height: 300px; display: flex; flex-direction: column; justify-content: space-between; }
-.card-title { font-size: 1.4rem; margin: 10px 0; }
-.card-description { color: #94a3b8; line-height: 1.6; }
+/* Logo & Ticker */
+.logo-text { font-size: 2rem; font-weight: 800; letter-spacing: -1px; }
+.logo-text span { color: var(--accent); text-shadow: 0 0 15px rgba(0, 210, 255, 0.5); }
 
-/* Visibility */
+.ticker-wrap { background: rgba(255,255,255,0.05); padding: 5px 15px; border-radius: 5px; margin-top: 10px; overflow: hidden; width: 400px; }
+.ticker { white-space: nowrap; font-size: 0.75rem; color: var(--accent); font-weight: 600; }
+
+/* Tabs with Dopamine Glow */
+.tab-navigation { display: flex; gap: 12px; margin: 30px 0; }
+.tab-item { 
+    background: var(--card-bg); 
+    padding: 14px 28px; 
+    border-radius: 12px; 
+    cursor: pointer; 
+    border: 1px solid var(--border); 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tab-item.active { 
+    background: var(--dopamine); 
+    box-shadow: 0 0 20px rgba(58, 123, 213, 0.5); 
+    transform: translateY(-2px);
+    border: none;
+}
+
+/* High Density Grid */
+.news-dense-grid { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for Mac screen space */
+    gap: 25px; 
+}
+
+.dopamine-card { 
+    background: var(--card-bg); 
+    border: 1px solid var(--border);
+    border-radius: 20px; 
+    padding: 30px; 
+    display: flex; 
+    flex-direction: column; 
+    transition: 0.3s;
+    backdrop-filter: blur(10px);
+}
+.dopamine-card:hover { 
+    border-color: var(--accent);
+    transform: scale(1.02);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.card-tag { font-size: 0.7rem; font-weight: 800; color: var(--accent); letter-spacing: 1.5px; margin-bottom: 10px; }
+.card-title { font-size: 1.5rem; margin-bottom: 15px; line-height: 1.2; }
+.card-description { font-size: 0.95rem; color: #cbd5e1; line-height: 1.6; flex-grow: 1; margin-bottom: 20px; }
+
+/* Action Buttons */
+.action-btn { 
+    align-self: flex-start;
+    padding: 8px 20px;
+    background: rgba(0, 210, 255, 0.1);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+/* Tab Switch Visibility */
 .tab-content { display: none; }
-.tab-content.active { display: block; }
+.tab-content.active { display: block; animation: fadeIn 0.5s; }
 
-/* Tools */
-.hero-tool-card { background: var(--dopamine); padding: 30px; border-radius: 24px; margin-bottom: 20px; }
-.tool-table-wrapper { background: var(--card-bg); border-radius: 15px; padding: 15px; }
-.tool-table { width: 100%; border-collapse: collapse; }
-.tool-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-
-.new-tab-trigger { background: transparent; color: var(--accent); border: 2px dashed var(--accent); border-radius: 50px; padding: 10px 20px; cursor: pointer; font-weight: 700; }
-.action-btn { color: var(--accent); text-decoration: none; font-weight: 700; border: 1px solid var(--accent); padding: 5px 15px; border-radius: 8px; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
