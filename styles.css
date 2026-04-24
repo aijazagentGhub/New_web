@@ -1,45 +1,59 @@
-/* Column Sizing Strategy */
+/* Core Table Structure */
 .data-table {
     width: 100%;
-    table-layout: auto; /* Allow content to push widths */
+    border-collapse: collapse;
+    table-layout: fixed; /* Crucial for controlling width */
 }
 
-.col-title { width: 25%; }
-.col-brief { width: 55%; }
-.col-icon  { width: 50px; text-align: center; } /* Compact Icon */
-.col-date  { width: 120px; } /* Compact Date */
+.data-table th, .data-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+}
 
-/* Textarea Optimization */
+/* Dynamic Column Sizing */
+.col-title { width: 30%; } /* Increased space for headline */
+.col-brief { width: 50%; } /* Primary space for insights */
+.col-icon  { width: 50px; text-align: center; } /* Compact Icon */
+.col-date  { width: 130px; } /* Compact Date */
+
+/* Input & Textarea Optimization */
+.col-title input {
+    width: 100%;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+    color: #1e293b;
+}
+
 textarea {
     width: 100%;
-    height: 60px;
-    padding: 8px;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
+    min-height: 70px;
+    padding: 6px;
     font-size: 13px;
-    line-height: 1.4;
-    resize: vertical;
+    line-height: 1.5;
+    border: 1px solid #f1f5f9;
+    border-radius: 4px;
+    resize: none;
 }
 
-/* Icon Link Style */
+/* Slim Date & Link */
+.col-date input {
+    font-size: 12px;
+    border: none;
+    background: transparent;
+}
+
 .icon-link {
     color: #0369a1;
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
+    padding: 6px;
     border-radius: 50%;
-    transition: background 0.2s;
+    transition: all 0.2s;
 }
 
 .icon-link:hover {
-    background: #e0f2fe;
+    background-color: #f0f9ff;
     color: #0284c7;
-}
-
-.col-date input {
-    font-size: 12px;
-    padding: 5px;
-    border: none;
-    background: transparent;
+    transform: scale(1.1);
 }
