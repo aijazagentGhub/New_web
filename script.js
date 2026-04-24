@@ -1,98 +1,95 @@
-// 1. DATA REPOSITORIES - Separated at the source
 const newsData = [
-    { title: "Anthropic 'Mythos' Bank Alert", brief: "Indian Finance Ministry issued emergency security protocols for BFSI. 'Mythos' models found capable of exploiting legacy banking mainframes through advanced prompt-injection sequences that bypass traditional firewall logic.", url: "#", date: "2026-04-25" },
-    { title: "Merck Signs $1B Gemini Deal", brief: "Merck officially deployed 75,000 Gemini agents today for autonomous R&D. This integration allows for real-time predictive chemical manufacturing and global supply chain orchestration across 140 manufacturing sites.", url: "#", date: "2026-04-25" },
-    { title: "XPENG 'Physical AI' Launch", brief: "GX Robotaxi and IRON humanoid debuted today at Auto China 2026. These agents utilize vision-language-action (VLA) navigation models powered by Turing 3,000 TOPS chips for true autonomous urban mobility.", url: "#", date: "2026-04-25" },
-    { title: "Nvidia Hits $5.1T Market Cap", brief: "Nvidia valuation remains at record highs as global demand for Blackwell-Ultra 'Agentic Reasoning' hardware continues to surge. Institutional investors are pivoting toward long-term AI infrastructure plays.", url: "#", date: "2026-04-25" },
-    { title: "OpenAI 'Action Engine' GPT-5.5", brief: "The new GPT-5.5 features a native 'Action Engine' that allows the model to control enterprise OS interfaces. This enables full automation of complex JIRA, SAP, and Salesforce workflows for senior managers.", url: "#", date: "2026-04-24" },
-    { title: "DeepSeek V4-Pro Launch", brief: "Released yesterday, V4-Pro matches GPT-5.4 benchmarks while significantly lowering the barrier for local reasoning. This makes on-premise AI hosting more viable for security-conscious banking sectors.", url: "#", date: "2026-04-24" }
+    { title: "Anthropic 'Mythos' Bank Alert", brief: "Indian Finance Ministry issued emergency security protocols for BFSI. 'Mythos' models found capable of exploiting legacy banking mainframes.", url: "#", date: "2026-04-25" },
+    { title: "Merck Signs $1B Gemini Deal", brief: "Merck officially deployed 75,000 Gemini agents today for autonomous R&D and predictive chemical manufacturing across global sites.", url: "#", date: "2026-04-25" },
+    { title: "XPENG 'Physical AI' Launch", brief: "GX Robotaxi and IRON humanoid debuted today at Auto China 2026, featuring vision-language-action (VLA) navigation models.", url: "#", date: "2026-04-25" },
+    { title: "Nvidia Hits $5.1T Cap", brief: "Nvidia valuation remains at record highs as global demand for Blackwell-Ultra 'Agentic Reasoning' hardware continues to surge.", url: "#", date: "2026-04-25" },
+    { title: "OpenAI 'Action Engine'", brief: "The new GPT-5.5 features a native 'Action Engine' that allows the model to control enterprise OS interfaces for senior manager tasks.", url: "#", date: "2026-04-24" },
+    { title: "DeepSeek V4-Pro Launch", brief: "Released yesterday, V4-Pro matches GPT-5.4 benchmarks while significantly lowering the barrier for local reasoning.", url: "#", date: "2026-04-24" }
 ];
 
 const toolsData = [
     { name: "Mythos BFSI API", usage: "STRESS TESTING: Specialized API for banking security against agentic intrusion.", category: "Security", isNew: true },
-    { name: "Claude 4.5 Opus", usage: "REASONING: High-tier LLM for complex regulatory auditing and deep document analysis.", category: "LLM", isNew: false },
-    { name: "Cursor AI", usage: "ENGINEERING: AI-native IDE that maps entire codebases for architectural refactoring.", category: "Development", isNew: false },
-    { name: "n8n (Agentic)", usage: "AUTOMATION: Self-hosted tool for building multi-step AI agents for internal systems.", category: "Automation", isNew: false }
+    { name: "Claude 4.5 Opus", usage: "REASONING: High-tier LLM for complex regulatory auditing.", category: "LLM", isNew: false },
+    { name: "Cursor AI", usage: "ENGINEERING: AI-native IDE for architectural refactoring.", category: "Development", isNew: false },
+    { name: "n8n (Agentic)", usage: "AUTOMATION: Self-hosted tool for building multi-step AI agents.", category: "Automation", isNew: false }
 ];
 
-// 2. RENDERING ENGINE - Hard Separation
 function renderNews() {
-    const newsGrid = document.getElementById('newsGrid');
-    if (!newsGrid) return;
-    
-    // Clear and Inject only News
-    newsGrid.innerHTML = newsData.map(n => `
-        <div class="dopamine-card">
-            <div class="card-tag">● AI BREAKTHROUGH</div>
-            <h2 class="card-title">${n.title}</h2>
-            <p class="card-description">${n.brief}</p>
-            <div class="card-footer">
-                <span class="date-label">${n.date}</span>
-                <a href="${n.url}" class="action-btn">FULL ANALYSIS ↗</a>
+    const grid = document.getElementById('newsGrid');
+    if (grid) {
+        grid.innerHTML = newsData.map(n => `
+            <div class="news-card">
+                <span class="card-tag">LATEST</span>
+                <h2 class="card-title">${n.title}</h2>
+                <p class="card-description">${n.brief}</p>
+                <div class="card-footer"><span>${n.date}</span><a href="${n.url}" class="view-btn">READ ↗</a></div>
             </div>
-        </div>
-    `).join('');
+        `).join('');
+    }
 }
 
 function renderTools() {
     const hero = document.getElementById('latestToolRow');
-    const toolsGrid = document.getElementById('toolsCategorized');
-    if (!hero || !toolsGrid) return;
-
-    // Render Hero Banner
-    const newest = toolsData.find(t => t.isNew) || toolsData[0];
-    hero.innerHTML = `
-        <div class="hero-tool-card">
-            <div class="hero-badge">NEWEST ADDITION</div>
-            <h3>${newest.name}</h3>
-            <p>${newest.usage}</p>
-        </div>
-    `;
-
-    // Render Categorized Tables
-    const categories = [...new Set(toolsData.map(t => t.category))];
-    toolsGrid.innerHTML = categories.map(cat => `
-        <div class="tool-section">
-            <h3 class="section-title" style="color: var(--accent); margin-top:20px;">${cat}</h3>
-            <div class="tool-table-wrapper">
+    const list = document.getElementById('toolsCategorized');
+    if (hero && list) {
+        const newest = toolsData.find(t => t.isNew);
+        hero.innerHTML = `<div class="hero-tool"><h3>${newest.name}</h3><p>${newest.usage}</p></div>`;
+        const cats = [...new Set(toolsData.map(t => t.category))];
+        list.innerHTML = cats.map(cat => `
+            <div class="tool-section">
+                <h3 class="section-title">${cat}</h3>
                 <table class="tool-table">
                     ${toolsData.filter(t => t.category === cat && !t.isNew).map(t => `
-                        <tr>
-                            <td width="30%"><strong>${t.name}</strong></td>
-                            <td>${t.usage}</td>
-                        </tr>
+                        <tr><td width="30%"><strong>${t.name}</strong></td><td>${t.usage}</td></tr>
                     `).join('')}
                 </table>
             </div>
-        </div>
-    `).join('');
+        `).join('');
+    }
 }
 
-// 3. UTILITIES
-window.switchTab = (tabName, el) => {
+// FIX: Bulletproof Export Function
+window.exportData = (type) => {
+    const data = type === 'news' ? newsData : toolsData;
+    const headers = type === 'news' ? ["Title", "Brief", "Date"] : ["Name", "Usage", "Category"];
+    
+    let csvContent = headers.join(",") + "\n";
+    data.forEach(item => {
+        let row = headers.map(h => `"${item[h.toLowerCase()] || ''}"`).join(",");
+        csvContent += row + "\n";
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('href', url);
+    a.setAttribute('download', `IntelligencePulse_${type}_${new Date().toLocaleDateString()}.csv`);
+    a.click();
+};
+
+window.switchTab = (name, el) => {
     document.querySelectorAll('.tab-content, .tab-item').forEach(i => i.classList.remove('active'));
-    document.getElementById(tabName + 'Tab').classList.add('active');
+    document.getElementById(name + 'Tab').classList.add('active');
     el.classList.add('active');
 };
 
 window.renameTab = (e, icon) => {
     e.stopPropagation();
     const label = icon.previousElementSibling;
-    const newName = prompt("Rename your tab:", label.innerText);
+    const newName = prompt("Rename Tab:", label.innerText);
     if (newName) label.innerText = newName;
 };
 
 window.addNewTab = () => {
-    const name = prompt("Name for new stream:");
+    const name = prompt("Tab Name:");
     if (!name) return;
     const btn = document.createElement('div');
     btn.className = 'tab-item';
     btn.innerHTML = `<span class="tab-label">${name}</span><span class="rename-trigger" onclick="renameTab(event, this)">✎</span>`;
-    btn.onclick = () => switchTab('dynamic', btn);
+    btn.onclick = () => switchTab('news', btn); // Defaults to news view for new tabs
     document.getElementById('tabBar').insertBefore(btn, document.getElementById('addTabBtn'));
 };
 
-// 4. INITIALIZE
 document.addEventListener('DOMContentLoaded', () => {
     renderNews();
     renderTools();
