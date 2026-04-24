@@ -2,7 +2,7 @@
     --sky-bg: #f0f9ff;
     --sky-accent: #0ea5e9;
     --sky-dark: #0369a1;
-    --glass-white: rgba(255, 255, 255, 0.8);
+    --glass-white: rgba(255, 255, 255, 0.85);
     --text-main: #0f172a;
     --text-muted: #475569;
 }
@@ -11,11 +11,10 @@
 
 body {
     background: var(--sky-bg);
-    background-attachment: fixed;
-    /* Soft sky gradient */
     background-image: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
     font-family: 'Plus Jakarta Sans', sans-serif;
     color: var(--text-main);
+    min-height: 100vh;
 }
 
 .sky-container {
@@ -24,29 +23,42 @@ body {
     padding: 20px;
 }
 
-/* Header Styling */
 .main-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 40px 0;
-    flex-wrap: wrap;
     gap: 20px;
 }
 
-h1 { font-size: 2rem; letter-spacing: -1px; }
+h1 { font-size: 2.2rem; letter-spacing: -1px; }
 h1 span { color: var(--sky-accent); }
 .date-badge { font-weight: 600; color: var(--text-muted); font-size: 0.9rem; }
 
-/* The Grid (Responsive) */
-.news-grid {
-    display: grid;
-    /* 3 columns on desktop, 2 on tablet, 1 on mobile */
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 24px;
+.glass-btn {
+    background: white;
+    border: 1px solid var(--sky-accent);
+    color: var(--sky-accent);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-/* Glassmorphic Cards */
+.glass-btn:hover {
+    background: var(--sky-accent);
+    color: white;
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    padding-bottom: 40px;
+}
+
 .card {
     background: var(--glass-white);
     backdrop-filter: blur(10px);
@@ -57,9 +69,9 @@ h1 span { color: var(--sky-accent); }
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: all 0.3s ease;
+    height: 350px;
+    transition: 0.3s;
     box-shadow: 0 10px 30px rgba(14, 165, 233, 0.05);
-    height: 340px;
 }
 
 .card:hover {
@@ -69,7 +81,7 @@ h1 span { color: var(--sky-accent); }
 }
 
 .card-title {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--sky-dark);
     line-height: 1.4;
@@ -80,10 +92,10 @@ h1 span { color: var(--sky-accent); }
     font-size: 0.95rem;
     color: var(--text-muted);
     line-height: 1.6;
+    overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
-    overflow: hidden;
 }
 
 .card-footer {
@@ -103,14 +115,11 @@ h1 span { color: var(--sky-accent); }
     text-decoration: none;
     font-size: 0.85rem;
     font-weight: 700;
-    transition: 0.2s;
 }
 
-.btn-view:hover { background: var(--sky-dark); }
-
-/* Mobile Specific Tweaks */
-@media (max-width: 600px) {
-    .main-header { padding: 20px 0; text-align: center; justify-content: center; }
-    h1 { font-size: 1.6rem; }
-    .card { height: auto; min-height: 300px; }
+/* Mobile Tweaks */
+@media (max-width: 768px) {
+    .main-header { flex-direction: column; text-align: center; }
+    h1 { font-size: 1.8rem; }
+    .card { height: auto; min-height: 320px; }
 }
