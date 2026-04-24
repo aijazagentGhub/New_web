@@ -3,22 +3,23 @@ const tabContent = document.getElementById('tabContent');
 const addTabBtn = document.getElementById('addTabBtn');
 const syncStatus = document.getElementById('syncStatus');
 
-// TOP 2 NEWS FOR APRIL 24, 2026 (Fallback so it's never blank)
+// Initial News with new "Brief" summarization
 const initialNews = [
     { 
-        title: "DeepSeek V4: China's New Open-Source Model Rivals GPT-4o Performance", 
+        title: "DeepSeek V4: China's New Open-Source Model", 
+        brief: "A massive upgrade in open-source AI, rivaling GPT-4o in coding and math benchmarks while maintaining efficiency.",
         url: "https://www.deepseek.com/news/v4-announcement", 
         date: "2026-04-24" 
     },
     { 
-        title: "OpenAI GPT-5.5 Preview: Enhanced Agentic Capabilities Released for Developers", 
+        title: "OpenAI GPT-5.5 Preview Released", 
+        brief: "New 'Agentic' reasoning update that allows AI to perform multi-step tasks across different apps autonomously.",
         url: "https://openai.com/news/gpt-5-5-preview", 
         date: "2026-04-24" 
     }
 ];
 
-// Initialize Tabs - Checks if "Latest AI news" exists, otherwise creates it with data
-let tabs = JSON.parse(localStorage.getItem('myAutoNewsTabs_v2')) || [
+let tabs = JSON.parse(localStorage.getItem('myAutoNewsTabs_v3')) || [
     { 
         id: "news-tab-001", 
         title: "Latest AI news", 
@@ -27,7 +28,6 @@ let tabs = JSON.parse(localStorage.getItem('myAutoNewsTabs_v2')) || [
     }
 ];
 
-// Fetcher Logic
 async function fetchLiveAINews() {
     syncStatus.innerText = "Syncing...";
     const RSS_URL = "https://www.wired.com/feed/category/ai/latest/rss";
@@ -42,6 +42,7 @@ async function fetchLiveAINews() {
             if (newsTab) {
                 const newItems = data.items.slice(0, 2).map(item => ({
                     title: item.title,
+                    brief: item.description.replace(/<[^>]*>?/gm, '').substring(0, 120) + "...", // Auto-summarizing snippet
                     url: item.link,
                     date: new Date().toISOString().split('T')[0]
                 }));
@@ -59,12 +60,12 @@ async function fetchLiveAINews() {
             }
         }
     } catch (e) {
-        syncStatus.innerText = "Showing stored news";
+        syncStatus.innerText = "Local Mode";
     }
 }
 
 function saveToMemory() {
-    localStorage.setItem('myAutoNewsTabs_v2', JSON.stringify(tabs));
+    localStorage.setItem('myAutoNewsTabs_v3', JSON.stringify(tabs));
 }
 
 function render() {
@@ -84,22 +85,23 @@ function render() {
         if (tab.active) {
             const wrapper = document.createElement('div');
             wrapper.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
                     <h2>${tab.title}</h2>
-                    <button class="add-row-btn" style="background:#0369a1; padding: 5px 10px;" onclick="fetchLiveAINews()">↻ Refresh News</button>
+                    <button class="add-row-btn" style="background:#0369a1;" onclick="fetchLiveAINews()">↻ Sync Latest News</button>
                 </div>
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th style="width: 50%;">Meaningful Title</th>
-                            <th>URL</th>
-                            <th>Date</th>
-                            <th style="width:40px"></th>
+                            <th style="width: 25%;">Title</th>
+                            <th style="width: 35%;">Brief Summary</th>
+                            <th style="width: 20%;">URL (Click to Read)</th>
+                            <th style="width: 12%;">Date</th>
+                            <th style="width: 40px;"></th>
                         </tr>
                     </thead>
                     <tbody id="tableBody"></tbody>
                 </table>
-                <button class="add-row-btn" style="margin-top:20px;" onclick="addRow('${tab.id}')">+ Add Custom Row</button>
+                <button class="add-row-btn" style="margin-top:20px; background:#64748b;" onclick="addRow('${tab.id}')">+ Add Custom Entry</button>
             `;
             tabContent.appendChild(wrapper);
             renderRows(tab);
@@ -116,7 +118,13 @@ function renderRows(tab) {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td><input type="text" value="${row.title}" oninput="updateCell('${tab.id}', ${index}, 'title', this.value)"></td>
-            <td><input type="url" value="${row.url}" oninput="updateCell('${tab.id}', ${index}, 'url', this.value)"></td>
+            <td><textarea oninput="updateCell('${tab.id}', ${index}, 'brief', this.value)">${row.brief || ''}</textarea></td>
+            <td>
+                <div class="url-cell">
+                    <input type="url" value="${row.url}" oninput="updateCell('${tab.id}', ${index}, 'url', this.value)">
+                    <a href="${row.url}" target="_blank" title="Open Link">🔗</a>
+                </div>
+            </td>
             <td><input type="date" value="${row.date}" oninput="updateCell('${tab.id}', ${index}, 'date', this.value)"></td>
             <td><button class="delete-row-btn" onclick="deleteRow('${tab.id}', ${index})">×</button></td>
         `;
@@ -132,7 +140,7 @@ window.updateCell = (id, idx, field, val) => {
 
 window.addRow = (id) => {
     const tab = tabs.find(t => t.id === id);
-    tab.rows.push({ title: "New AI Event", url: "https://", date: new Date().toISOString().split('T')[0] });
+    tab.rows.push({ title: "", brief: "", url: "https://", date: new Date().toISOString().split('T')[0] });
     render();
 };
 
