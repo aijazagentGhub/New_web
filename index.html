@@ -5,38 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intelligence Pulse | v3.0</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="sky-container">
         <header class="main-header">
             <div class="logo-area">
                 <h1 class="logo-text">Intelligence <span>Pulse</span></h1>
-                <p class="live-status">● LIVE UPDATES • April 25, 2026</p>
+                <div class="ticker-wrap">
+                    <div class="ticker">
+                        <span>● LATEST: OpenAI GPT-5.5 Action Engine Released</span>
+                        <span>● MARKET: Nvidia Hits $5.1T</span>
+                        <span>● TECH: Merck Signs Gemini Deal</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <p class="live-status">SATURDAY, APRIL 25, 2026</p>
+                <button id="exportNewsBtn" class="premium-btn">📥 Export Report</button>
             </div>
         </header>
 
         <nav class="tab-navigation" id="tabBar">
             <div class="tab-item active" onclick="switchTab('news', this)">
-                <span class="tab-label">Tab 1: NEWS</span>
+                <span class="tab-label">NEWS STREAM</span>
                 <span class="rename-trigger" onclick="renameTab(event, this)">✎</span>
             </div>
             <div class="tab-item" onclick="switchTab('tools', this)">
-                <span class="tab-label">Tab 2: AI TOOLS</span>
+                <span class="tab-label">AI TOOLKIT</span>
                 <span class="rename-trigger" onclick="renameTab(event, this)">✎</span>
             </div>
             <button id="addTabBtn" class="new-tab-trigger" onclick="addNewTab()">+ New Tab</button>
         </nav>
 
         <main id="newsTab" class="tab-content active">
-            <div class="news-dense-grid" id="newsGrid">
-                </div>
+            <div class="news-dense-grid" id="newsGrid"></div>
         </main>
 
         <main id="toolsTab" class="tab-content">
-            <div id="latestToolRow"></div>
-            <div id="toolsCategorized">
-                </div>
+            <div class="tools-layout">
+                <div id="latestToolRow"></div>
+                <div id="toolsCategorized"></div>
+            </div>
         </main>
     </div>
     <script src="script.js"></script>
