@@ -1,69 +1,67 @@
-:root {
-    --sky-bg: #f0f9ff;
-    --ice-white: #ffffff;
-    --sky-accent: #0284c7;
-    --sky-text: #0c4a6e;
-    --sky-muted: #64748b;
-    --border: #e0f2fe;
+/* --- MOBILE OPTIMIZATION --- */
+@media (max-width: 768px) {
+    .sky-container { padding: 15px; }
+    .news-dense-grid { 
+        grid-template-columns: 1fr; /* Single column for phone */
+        gap: 15px; 
+    }
+    .tab-navigation { 
+        overflow-x: auto; /* Allow tab scrolling on phone */
+        padding-bottom: 15px;
+    }
+    .logo-text { font-size: 1.5rem; }
+    .hero-tool { padding: 20px; }
+    .tool-table { font-size: 0.85rem; }
+    .mobile-scroll-table { overflow-x: auto; width: 100%; }
 }
 
-body { 
-    background-color: var(--sky-bg); 
-    color: var(--sky-text); 
-    font-family: 'Plus Jakarta Sans', sans-serif; 
-    margin: 0; 
-}
-
-.sky-container { max-width: 1400px; margin: 0 auto; padding: 40px; }
-
-/* Header */
-.main-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-.logo-text { font-size: 2rem; font-weight: 800; color: var(--sky-accent); }
-.logo-text span { color: var(--sky-text); }
-.live-status { font-size: 0.8rem; font-weight: 700; color: var(--sky-muted); }
-
-/* Tabs */
-.tab-navigation { display: flex; gap: 12px; margin-bottom: 30px; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
-.tab-item { 
-    background: var(--ice-white); 
-    padding: 12px 24px; 
-    border-radius: 12px; 
-    cursor: pointer; 
-    font-weight: 700; 
+/* --- INTERACTIVE CARDS --- */
+.news-card.interactive {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 1px solid var(--border);
-    display: flex; align-items: center;
+    cursor: pointer;
 }
-.tab-item.active { background: var(--sky-accent); color: white; border: none; }
-.rename-trigger { margin-left: 10px; opacity: 0.6; cursor: pointer; }
 
-/* Action Bar */
-.tab-action-bar { margin-bottom: 20px; display: flex; justify-content: flex-end; }
-.export-btn { 
-    background: var(--ice-white); 
-    border: 1.5px solid var(--sky-accent); 
+.news-card.interactive:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(2, 132, 199, 0.15);
+    border-color: var(--sky-accent);
+}
+
+/* Subtle Glow Effect on Hover */
+.card-glow {
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(2, 132, 199, 0.05) 0%, transparent 70%);
+    opacity: 0;
+    transition: 0.5s;
+    pointer-events: none;
+}
+
+.news-card.interactive:hover .card-glow {
+    opacity: 1;
+}
+
+/* --- EYE SMOOTHING SKY BLUE REFINEMENTS --- */
+:root {
+    --sky-bg: #f8fafc;
+    --ice-white: #ffffff;
+    --sky-accent: #0ea5e9;
+    --sky-text: #0f172a;
+    --sky-muted: #475569;
+    --border: #e2e8f0;
+}
+
+/* Ensure smooth scrolling for mobile experience */
+html { scroll-behavior: smooth; }
+
+.section-title {
+    font-size: 1.1rem;
     color: var(--sky-accent);
-    padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer;
+    margin: 25px 0 10px 0;
+    border-left: 4px solid var(--sky-accent);
+    padding-left: 15px;
 }
-
-/* News Grid */
-.news-dense-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
-.news-card { 
-    background: var(--ice-white); 
-    padding: 30px; border-radius: 20px; 
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-    display: flex; flex-direction: column; justify-content: space-between;
-}
-.card-tag { font-size: 0.7rem; font-weight: 800; color: var(--sky-accent); margin-bottom: 10px; }
-.card-title { font-size: 1.4rem; margin-bottom: 15px; }
-.card-description { color: var(--sky-muted); line-height: 1.6; font-size: 0.95rem; margin-bottom: 20px; }
-
-/* Tools Layout */
-.hero-tool { background: linear-gradient(135deg, #0284c7, #0ea5e9); color: white; padding: 40px; border-radius: 20px; margin-bottom: 30px; }
-.tool-table { width: 100%; border-collapse: collapse; background: white; border-radius: 15px; overflow: hidden; }
-.tool-table td { padding: 20px; border-bottom: 1px solid var(--border); }
-
-/* Tab Toggle */
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-.new-tab-trigger { background: transparent; border: 2px dashed var(--sky-accent); color: var(--sky-accent); border-radius: 12px; padding: 10px 20px; font-weight: 700; cursor: pointer; }
-.view-btn { text-decoration: none; color: var(--sky-accent); font-weight: 800; border: 1.5px solid var(--sky-accent); padding: 5px 15px; border-radius: 8px; }
