@@ -1,6 +1,6 @@
 body {
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+    font-family: 'Inter', system-ui, sans-serif;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
     margin: 0;
     display: flex;
     justify-content: center;
@@ -10,12 +10,12 @@ body {
 
 .container {
     background: white;
-    width: 95%;
-    max-width: 1150px;
+    width: 98%;
+    max-width: 1300px;
     border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    border: 1px solid #7dd3fc;
-    min-height: 600px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+    border: 1px solid #bae6fd;
+    min-height: 650px;
 }
 
 .header {
@@ -28,7 +28,7 @@ body {
 }
 
 .add-tab-btn {
-    background: #f0f9ff;
+    background: white;
     color: #0369a1;
     border: none;
     padding: 8px 16px;
@@ -48,24 +48,22 @@ body {
 .tab-item {
     padding: 10px 15px;
     background: #f1f5f9;
-    border-radius: 8px 8px 0 0;
+    border-radius: 6px 6px 0 0;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     border: 1px solid #e2e8f0;
     border-bottom: none;
-    color: #475569;
 }
 
 .tab-item.active {
     background: white;
-    color: #0369a1;
-    font-weight: bold;
     border-top: 3px solid #0369a1;
+    font-weight: bold;
 }
 
-.tab-content { padding: 30px; }
+.tab-content { padding: 25px; }
 
 .data-table {
     width: 100%;
@@ -77,35 +75,57 @@ body {
     background: #f1f5f9;
     text-align: left;
     padding: 12px;
-    border-bottom: 2px solid #e2e8f0;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #64748b;
 }
 
 .data-table td { padding: 8px; border-bottom: 1px solid #f1f5f9; }
 
-input {
+input, textarea {
     width: 100%;
     padding: 8px;
     border: 1px solid #cbd5e1;
     border-radius: 4px;
     box-sizing: border-box;
+    font-size: 13px;
 }
 
+textarea {
+    height: 60px;
+    resize: none;
+}
+
+.url-cell {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.url-cell a {
+    text-decoration: none;
+    background: #f1f5f9;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.url-cell a:hover { background: #e2e8f0; }
+
 .add-row-btn {
-    background: #0ea5e9;
     color: white;
     border: none;
-    padding: 8px 15px;
+    padding: 10px 20px;
     border-radius: 6px;
     cursor: pointer;
+    font-weight: 500;
 }
 
 .delete-row-btn {
     background: #fee2e2;
     color: #ef4444;
     border: none;
-    padding: 4px 8px;
+    padding: 6px 10px;
     border-radius: 4px;
     cursor: pointer;
 }
-
-.rename-icon, .close-icon { color: #94a3b8; font-size: 12px; cursor: pointer; }
