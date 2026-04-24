@@ -1,103 +1,127 @@
-// Selecting elements from the DOM
 const tabButtons = document.getElementById('tabButtons');
 const tabContent = document.getElementById('tabContent');
 const addTabBtn = document.getElementById('addTabBtn');
 
-// 1. Initialize Tabs: Load from LocalStorage or start with default
-let tabs = JSON.parse(localStorage.getItem('myPersistentTabs')) || [
-    { id: Date.now(), title: "Work Tab", active: true }
+// Initialize with a table structure in the first tab
+let tabs = JSON.parse(localStorage.getItem('myTableTabs')) || [
+    { 
+        id: Date.now(), 
+        title: "Project Tracker", 
+        active: true, 
+        rows: [{ title: "", url: "", date: "" }] 
+    }
 ];
 
-// 2. Save current state to LocalStorage
 function saveToMemory() {
-    localStorage.setItem('myPersistentTabs', JSON.stringify(tabs));
+    localStorage.setItem('myTableTabs', JSON.stringify(tabs));
 }
 
-// 3. Render the UI
 function render() {
     tabButtons.innerHTML = '';
     tabContent.innerHTML = '';
 
     tabs.forEach((tab) => {
-        // Create the Tab Button element
+        // Render Tab Buttons
         const btn = document.createElement('div');
         btn.className = `tab-item ${tab.active ? 'active' : ''}`;
-        
-        // Tab HTML structure with Title, Rename Icon, and Close Icon
         btn.innerHTML = `
-            <span class="tab-title" onclick="setActive(${tab.id})">${tab.title}</span>
-            <span class="rename-btn" title="Rename" onclick="renameTab(event, ${tab.id})">✎</span>
-            <span class="close-btn" title="Delete" onclick="removeTab(event, ${tab.id})">×</span>
+            <span onclick="setActive(${tab.id})">${tab.title}</span>
+            <span style="cursor:pointer; font-size:12px;" onclick="renameTab(event, ${tab.id})">✎</span>
+            <span style="cursor:pointer; margin-left:10px;" onclick="removeTab(event, ${tab.id})">×</span>
         `;
         tabButtons.appendChild(btn);
 
-        // Create the Content Area (only displayed for the active tab)
+        // Render Content for Active Tab
         if (tab.active) {
-            tabContent.innerHTML = `
+            const container = document.createElement('div');
+            container.innerHTML = `
                 <h2>${tab.title}</h2>
-                <p>Welcome! You can now rename this tab and it will be remembered.</p>
-                <input type="text" placeholder="Enter your name" class="input-field">
-                <input type="email" placeholder="Enter your email" class="input-field">
-                <textarea placeholder="Enter your message" class="input-field" rows="4"></textarea>
-                <button class="submit-btn">Submit</button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>URL</th>
+                            <th>Date</th>
+                            <th style="width:50px"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+                <div class="table-actions">
+                    <button class="btn-add-row" onclick="addRow(${tab.id})">+ Add New Row</button>
+                </div>
             `;
+            tabContent.appendChild(container);
+            renderRows(tab);
         }
     });
-
     saveToMemory();
 }
 
-// 4. Function to Rename a Tab
-window.renameTab = (event, id) => {
-    event.stopPropagation(); // Stop the click from activating the tab
-    const tabToRename = tabs.find(t => t.id === id);
-    const newName = prompt("What would you like to name this tab?", tabToRename.title);
-    
-    if (newName !== null && newName.trim() !== "") {
-        tabToRename.title = newName.trim();
-        render();
-    }
-};
+function renderRows(tab) {
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '';
 
-// 5. Function to Add a New Tab
-addTabBtn.onclick = () => {
-    // Set all existing tabs to inactive
-    tabs.forEach(t => t.active = false);
-    
-    // Create new tab with unique ID
-    const newId = Date.now();
-    tabs.push({
-        id: newId,
-        title: `Tab ${tabs.length + 1}`,
-        active: true
+    tab.rows.forEach((row, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><input type="text" value="${row.title}" oninput="updateRow(${tab.id}, ${index}, 'title', this.value)" placeholder="Task Name"></td>
+            <td><input type="url" value="${row.url}" oninput="updateRow(${tab.id}, ${index}, 'url', this.value)" placeholder="https://..."></td>
+            <td><input type="date" value="${row.date}" oninput="updateRow(${tab.id}, ${index}, 'date', this.value)"></td>
+            <td><button class="btn-delete-row" onclick="deleteRow(${tab.id}, ${index})">×</button></td>
+        `;
+        tbody.appendChild(tr);
     });
-    
+}
+
+// Actions
+window.addRow = (tabId) => {
+    const tab = tabs.find(t => t.id === tabId);
+    tab.rows.push({ title: "", url: "", date: "" });
     render();
 };
 
-// 6. Function to Switch Active Tab
+window.updateRow = (tabId, rowIndex, field, value) => {
+    const tab = tabs.find(t => t.id === tabId);
+    tab.rows[rowIndex][field] = value;
+    saveToMemory(); // Save immediately as user types
+};
+
+window.deleteRow = (tabId, rowIndex) => {
+    const tab = tabs.find(t => t.id === tabId);
+    tab.rows.splice(rowIndex, 1);
+    render();
+};
+
 window.setActive = (id) => {
     tabs.forEach(t => t.active = (t.id === id));
     render();
 };
 
-// 7. Function to Remove a Tab
+window.renameTab = (event, id) => {
+    event.stopPropagation();
+    const tab = tabs.find(t => t.id === id);
+    const newName = prompt("New name:", tab.title);
+    if (newName) { tab.title = newName; render(); }
+};
+
 window.removeTab = (event, id) => {
     event.stopPropagation();
-    if (tabs.length === 1) {
-        alert("You must have at least one tab open.");
-        return;
-    }
-    
+    if (tabs.length === 1) return;
     tabs = tabs.filter(t => t.id !== id);
-    
-    // If the active tab was deleted, make the first one active
-    if (!tabs.find(t => t.active)) {
-        tabs[0].active = true;
-    }
-    
+    if (!tabs.find(t => t.active)) tabs[0].active = true;
     render();
 };
 
-// Run the initial render on load
+addTabBtn.onclick = () => {
+    tabs.forEach(t => t.active = false);
+    tabs.push({ 
+        id: Date.now(), 
+        title: `Tab ${tabs.length + 1}`, 
+        active: true, 
+        rows: [{ title: "", url: "", date: "" }] 
+    });
+    render();
+};
+
 render();
