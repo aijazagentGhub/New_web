@@ -1,135 +1,45 @@
-body {
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.container {
-    background: white;
-    width: 98%;
-    max-width: 1400px;
-    border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    border: 1px solid #7dd3fc;
-    min-height: 700px;
-}
-
-.header {
-    background: #0369a1;
-    color: white;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.add-tab-btn {
-    background: white;
-    color: #0369a1;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.tab-buttons {
-    display: flex;
-    background: #f1f5f9;
-    border-bottom: 1px solid #e2e8f0;
-    padding: 12px 12px 0 12px;
-    gap: 8px;
-}
-
-.tab-item {
-    padding: 10px 20px;
-    background: #e2e8f0;
-    border-radius: 8px 8px 0 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    color: #475569;
-}
-
-.tab-item.active {
-    background: white;
-    border-top: 3px solid #0369a1;
-    font-weight: 600;
-    color: #0369a1;
-}
-
-.tab-content { padding: 30px; }
-
+/* Column Sizing Strategy */
 .data-table {
     width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
+    table-layout: auto; /* Allow content to push widths */
 }
 
-.data-table th {
-    background: #f8fafc;
-    text-align: left;
-    padding: 15px;
-    font-size: 12px;
-    color: #64748b;
-    border-bottom: 2px solid #e2e8f0;
-}
+.col-title { width: 25%; }
+.col-brief { width: 55%; }
+.col-icon  { width: 50px; text-align: center; } /* Compact Icon */
+.col-date  { width: 120px; } /* Compact Date */
 
-.data-table td { padding: 10px; border-bottom: 1px solid #f1f5f9; }
-
-input, textarea {
+/* Textarea Optimization */
+textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    box-sizing: border-box;
+    height: 60px;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
     font-size: 13px;
+    line-height: 1.4;
+    resize: vertical;
 }
 
-textarea { height: 80px; resize: none; line-height: 1.4; }
-
-.url-cell { display: flex; align-items: center; gap: 8px; }
-
-.link-icon {
-    text-decoration: none;
-    background: #0ea5e9;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 11px;
-    white-space: nowrap;
+/* Icon Link Style */
+.icon-link {
+    color: #0369a1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.2s;
 }
 
-.refresh-btn {
-    background: #0369a1;
-    color: white;
+.icon-link:hover {
+    background: #e0f2fe;
+    color: #0284c7;
+}
+
+.col-date input {
+    font-size: 12px;
+    padding: 5px;
     border: none;
-    padding: 8px 15px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.add-custom-btn {
-    background: #64748b;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    margin-top: 20px;
-    cursor: pointer;
-}
-
-.delete-row-btn {
-    background: #fee2e2;
-    color: #ef4444;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 4px;
-    cursor: pointer;
+    background: transparent;
 }
