@@ -1,19 +1,59 @@
 const tabButtons = document.getElementById('tabButtons');
 const tabContent = document.getElementById('tabContent');
 const addTabBtn = document.getElementById('addTabBtn');
+const syncStatus = document.getElementById('syncStatus');
 
-// Initialize with a table structure in the first tab
-let tabs = JSON.parse(localStorage.getItem('myTableTabs')) || [
+// Initialize Tabs from LocalStorage or create defaults
+let tabs = JSON.parse(localStorage.getItem('myAutoNewsTabs')) || [
     { 
-        id: Date.now(), 
-        title: "Project Tracker", 
+        id: "news-tab-001", 
+        title: "Latest AI news", 
         active: true, 
-        rows: [{ title: "", url: "", date: "" }] 
+        rows: [] 
     }
 ];
 
+// --- NEW: AUTOMATED NEWS FETCHER ---
+async function fetchLiveAINews() {
+    syncStatus.innerText = "Fetching live AI news...";
+    
+    // Using a public RSS to JSON converter for Wired's AI feed
+    const RSS_URL = "https://www.wired.com/feed/category/ai/latest/rss";
+    const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
+
+    try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+
+        if (data.status === 'ok') {
+            // Get the top 3 latest items
+            const newItems = data.items.slice(0, 3).map(item => ({
+                title: item.title,
+                url: item.link,
+                date: item.pubDate.split(' ')[0] // Formats as YYYY-MM-DD
+            }));
+
+            // Find our specific AI News tab
+            const newsTab = tabs.find(t => t.title === "Latest AI news");
+            if (newsTab) {
+                // Merge and remove duplicates based on URL
+                const existingUrls = new Set(newsTab.rows.map(r => r.url));
+                const uniqueNewItems = newItems.filter(item => !existingUrls.has(item.url));
+                
+                // Add new items to the top
+                newsTab.rows = [...uniqueNewItems, ...newsTab.rows].slice(0, 20); // Keep last 20
+                syncStatus.innerText = `Update complete: Added ${uniqueNewItems.length} new stories.`;
+                render();
+            }
+        }
+    } catch (error) {
+        console.error("News Fetch Error:", error);
+        syncStatus.innerText = "Sync failed (Check connection)";
+    }
+}
+
 function saveToMemory() {
-    localStorage.setItem('myTableTabs', JSON.stringify(tabs));
+    localStorage.setItem('myAutoNewsTabs', JSON.stringify(tabs));
 }
 
 function render() {
@@ -21,37 +61,35 @@ function render() {
     tabContent.innerHTML = '';
 
     tabs.forEach((tab) => {
-        // Render Tab Buttons
         const btn = document.createElement('div');
         btn.className = `tab-item ${tab.active ? 'active' : ''}`;
         btn.innerHTML = `
-            <span onclick="setActive(${tab.id})">${tab.title}</span>
-            <span style="cursor:pointer; font-size:12px;" onclick="renameTab(event, ${tab.id})">✎</span>
-            <span style="cursor:pointer; margin-left:10px;" onclick="removeTab(event, ${tab.id})">×</span>
+            <span class="tab-title" onclick="setActive('${tab.id}')">${tab.title}</span>
+            <span class="rename-icon" onclick="renameTab(event, '${tab.id}')">✎</span>
+            <span class="close-icon" onclick="removeTab(event, '${tab.id}')">×</span>
         `;
         tabButtons.appendChild(btn);
 
-        // Render Content for Active Tab
         if (tab.active) {
-            const container = document.createElement('div');
-            container.innerHTML = `
-                <h2>${tab.title}</h2>
-                <table>
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h2>${tab.title}</h2>
+                    <button class="add-row-btn" style="margin-bottom:10px" onclick="fetchLiveAINews()">↻ Force Refresh</button>
+                </div>
+                <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Title</th>
+                            <th>Meaningful Title</th>
                             <th>URL</th>
                             <th>Date</th>
-                            <th style="width:50px"></th>
+                            <th style="width:40px"></th>
                         </tr>
                     </thead>
                     <tbody id="tableBody"></tbody>
                 </table>
-                <div class="table-actions">
-                    <button class="btn-add-row" onclick="addRow(${tab.id})">+ Add New Row</button>
-                </div>
             `;
-            tabContent.appendChild(container);
+            tabContent.appendChild(wrapper);
             renderRows(tab);
         }
     });
@@ -60,36 +98,30 @@ function render() {
 
 function renderRows(tab) {
     const tbody = document.getElementById('tableBody');
+    if (!tbody) return;
     tbody.innerHTML = '';
-
     tab.rows.forEach((row, index) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td><input type="text" value="${row.title}" oninput="updateRow(${tab.id}, ${index}, 'title', this.value)" placeholder="Task Name"></td>
-            <td><input type="url" value="${row.url}" oninput="updateRow(${tab.id}, ${index}, 'url', this.value)" placeholder="https://..."></td>
-            <td><input type="date" value="${row.date}" oninput="updateRow(${tab.id}, ${index}, 'date', this.value)"></td>
-            <td><button class="btn-delete-row" onclick="deleteRow(${tab.id}, ${index})">×</button></td>
+            <td><input type="text" value="${row.title}" oninput="updateCell('${tab.id}', ${index}, 'title', this.value)"></td>
+            <td><input type="url" value="${row.url}" oninput="updateCell('${tab.id}', ${index}, 'url', this.value)"></td>
+            <td><input type="date" value="${row.date}" oninput="updateCell('${tab.id}', ${index}, 'date', this.value)"></td>
+            <td><button class="delete-row-btn" onclick="deleteRow('${tab.id}', ${index})">×</button></td>
         `;
         tbody.appendChild(tr);
     });
 }
 
-// Actions
-window.addRow = (tabId) => {
-    const tab = tabs.find(t => t.id === tabId);
-    tab.rows.push({ title: "", url: "", date: "" });
-    render();
+// Global Handlers
+window.updateCell = (id, idx, field, val) => {
+    const tab = tabs.find(t => t.id === id);
+    tab.rows[idx][field] = val;
+    saveToMemory();
 };
 
-window.updateRow = (tabId, rowIndex, field, value) => {
-    const tab = tabs.find(t => t.id === tabId);
-    tab.rows[rowIndex][field] = value;
-    saveToMemory(); // Save immediately as user types
-};
-
-window.deleteRow = (tabId, rowIndex) => {
-    const tab = tabs.find(t => t.id === tabId);
-    tab.rows.splice(rowIndex, 1);
+window.deleteRow = (id, idx) => {
+    const tab = tabs.find(t => t.id === id);
+    tab.rows.splice(idx, 1);
     render();
 };
 
@@ -98,15 +130,15 @@ window.setActive = (id) => {
     render();
 };
 
-window.renameTab = (event, id) => {
-    event.stopPropagation();
+window.renameTab = (e, id) => {
+    e.stopPropagation();
     const tab = tabs.find(t => t.id === id);
-    const newName = prompt("New name:", tab.title);
-    if (newName) { tab.title = newName; render(); }
+    const name = prompt("New tab name:", tab.title);
+    if (name) { tab.title = name; render(); }
 };
 
-window.removeTab = (event, id) => {
-    event.stopPropagation();
+window.removeTab = (e, id) => {
+    e.stopPropagation();
     if (tabs.length === 1) return;
     tabs = tabs.filter(t => t.id !== id);
     if (!tabs.find(t => t.active)) tabs[0].active = true;
@@ -115,13 +147,10 @@ window.removeTab = (event, id) => {
 
 addTabBtn.onclick = () => {
     tabs.forEach(t => t.active = false);
-    tabs.push({ 
-        id: Date.now(), 
-        title: `Tab ${tabs.length + 1}`, 
-        active: true, 
-        rows: [{ title: "", url: "", date: "" }] 
-    });
+    tabs.push({ id: Date.now().toString(), title: "Work Tab", active: true, rows: [] });
     render();
 };
 
+// INITIAL LOAD: Render then fetch latest news automatically
 render();
+fetchLiveAINews();
