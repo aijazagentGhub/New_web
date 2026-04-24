@@ -1,62 +1,64 @@
-// SOURCES: High-signal AI News RSS
-const RSS_FEEDS = [
-    'https://blog.google/technology/ai/rss/',
-    'https://openai.com/news/rss.xml',
-    'https://www.technologyreview.com/topic/artificial-intelligence/feed/'
+// Curation of AI Tools
+const toolsData = [
+    { name: "Gemini 1.5 Pro", usage: "Best for deep analysis of 1M+ token datasets (entire codebases or bank records).", category: "LLMs" },
+    { name: "NotebookLM", usage: "Grounds AI in your private documents/PDFs for accurate research without hallucinations.", category: "Research" },
+    { name: "ChatGPT o1", usage: "Excels at chain-of-thought reasoning for complex architectural and logic problems.", category: "LLMs" },
+    { name: "Cursor AI", usage: "An AI-native IDE that understands your full project context for senior-level engineering.", category: "Development" },
+    { name: "n8n", usage: "Self-hosted automation. Use this to build your local 'Agentic AI' search workflows.", category: "Automation" }
 ];
 
-// TOOLS: We keep these manually curated for quality
-const toolsData = [
-    { name: "Gemini 1.5 Pro", usage: "2M context window. Best for analyzing entire banking codebases.", category: "LLMs" },
-    { name: "NotebookLM", usage: "Ground your AI research strictly in your own uploaded project PDFs.", category: "Research" },
-    { name: "Cursor AI", usage: "AI-native IDE. Essential for senior engineers managing large repos.", category: "Development" },
-    { name: "n8n", usage: "The core engine for your local Agentic AI and automation workflows.", category: "Automation" }
+// High-signal RSS Feeds
+const FEEDS = [
+    "https://blog.google/technology/ai/rss/",
+    "https://openai.com/news/rss.xml",
+    "https://www.technologyreview.com/topic/artificial-intelligence/feed/"
 ];
 
 async function fetchLiveNews() {
-    const newsGrid = document.getElementById('newsGrid');
-    if (!newsGrid) return;
+    const grid = document.getElementById('newsGrid');
+    if (!grid) return;
 
-    newsGrid.innerHTML = '<p style="color: var(--sky-muted); padding: 20px;">Fetching latest AI pulses...</p>';
+    grid.innerHTML = '<p style="color: var(--sky-muted); padding: 20px;">Scanning the horizon for AI updates...</p>';
 
     try {
         let allArticles = [];
 
-        for (const url of RSS_FEEDS) {
-            // Using a CORS proxy so it works from your local file
-            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-            const response = await fetch(proxyUrl);
+        // Fetching from all sources
+        for (const feedUrl of FEEDS) {
+            // Using rss2json API (No key needed for low-volume requests)
+            const apiReq = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+            const response = await fetch(apiReq);
             const data = await response.json();
-            
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(data.contents, "text/xml");
-            const items = xmlDoc.querySelectorAll("item");
 
-            items.forEach(item => {
-                allArticles.push({
-                    title: item.querySelector("title")?.textContent || "Untitled",
-                    brief: item.querySelector("description")?.textContent.replace(/<[^>]*>?/gm, '').substring(0, 150) + "..." || "No description.",
-                    link: item.querySelector("link")?.textContent || "#",
-                    date: new Date(item.querySelector("pubDate")?.textContent).toLocaleDateString()
+            if (data.status === 'ok') {
+                data.items.forEach(item => {
+                    allArticles.push({
+                        title: item.title,
+                        brief: item.description.replace(/<[^>]*>?/gm, '').substring(0, 160) + "...",
+                        link: item.link,
+                        date: item.pubDate.split(' ')[0] // Simple YYYY-MM-DD
+                    });
                 });
-            });
+            }
         }
 
-        // Sort by date (newest first) and take top 9
+        // Sort: Newest first
         allArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        // Render top 9 news items
         renderNews(allArticles.slice(0, 9));
 
-    } catch (error) {
-        console.error("RSS Error:", error);
-        newsGrid.innerHTML = '<p style="color: red; padding: 20px;">Failed to fetch live feed. Check internet connection.</p>';
+    } catch (err) {
+        console.error("News Fetch Error:", err);
+        grid.innerHTML = '<p style="color: red; padding: 20px;">Connection failed. Check your internet.</p>';
     }
 }
 
 function renderNews(articles) {
-    const newsGrid = document.getElementById('newsGrid');
-    newsGrid.innerHTML = articles.map(n => `
+    const grid = document.getElementById('newsGrid');
+    grid.innerHTML = articles.map(n => `
         <div class="news-card">
-            <span class="card-tag">LIVE FEED</span>
+            <span class="card-tag">LATEST PULSE</span>
             <h2 class="card-title">${n.title}</h2>
             <p class="card-description">${n.brief}</p>
             <div class="card-footer">
@@ -76,7 +78,7 @@ function renderTools() {
             <h3 class="section-title">${cat}</h3>
             <table class="tool-table">
                 ${toolsData.filter(t => t.category === cat).map(t => `
-                    <tr><td width="35%"><strong>${t.name}</strong></td><td>${t.usage}</td></tr>
+                    <tr><td width="30%"><strong>${t.name}</strong></td><td>${t.usage}</td></tr>
                 `).join('')}
             </table>
         </div>
@@ -90,6 +92,6 @@ window.switchTab = (name, el) => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchLiveNews(); // This fetches fresh news every time you open/refresh
+    fetchLiveNews();
     renderTools();
 });
