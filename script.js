@@ -1,5 +1,6 @@
 let tabCount = 1;
 let activeTabId = 1;
+let tabNames = {}; // Store custom tab names
 
 // Initialize with first tab
 document.addEventListener('DOMContentLoaded', function() {
@@ -10,31 +11,68 @@ document.addEventListener('DOMContentLoaded', function() {
 function createTab() {
     tabCount++;
     const tabId = tabCount;
+    const defaultName = `Tab ${tabId}`;
+    tabNames[tabId] = defaultName;
+    
+    // Create tab button container
+    const tabBtnContainer = document.createElement('div');
+    tabBtnContainer.className = 'tab-btn-container';
+    tabBtnContainer.id = `tab-btn-${tabId}`;
     
     // Create tab button
     const tabBtn = document.createElement('button');
-    tabBtn.className = 'tab-btn' + (tabId === tabCount ? ' active' : '');
-    tabBtn.innerHTML = `
-        Tab ${tabId}
-        <button class="close-tab" onclick="event.stopPropagation(); closeTab(${tabId})" title="Close tab">×</button>
-    `;
-    tabBtn.onclick = () => switchTab(tabId);
+    tabBtn.className = 'tab-btn active';
+    tabBtn.id = `btn-${tabId}`;
+    tabBtn.innerHTML = `<span class="tab-name">${defaultName}</span>`;
+    tabBtn.onclick = (e) => {
+        if (e.target.closest('.tab-action-btn')) return;
+        switchTab(tabId);
+    };
     
-    document.getElementById('tabButtons').appendChild(tabBtn);
+    // Create action buttons container
+    const actionsContainer = document.createElement('div');
+    actionsContainer.className = 'tab-actions';
+    
+    // Rename button
+    const renameBtn = document.createElement('button');
+    renameBtn.className = 'tab-action-btn rename-btn';
+    renameBtn.title = 'Rename tab';
+    renameBtn.innerHTML = '✎';
+    renameBtn.onclick = (e) => {
+        e.stopPropagation();
+        renameTab(tabId);
+    };
+    
+    // Delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'tab-action-btn delete-btn';
+    deleteBtn.title = 'Delete tab';
+    deleteBtn.innerHTML = '×';
+    deleteBtn.onclick = (e) => {
+        e.stopPropagation();
+        closeTab(tabId);
+    };
+    
+    actionsContainer.appendChild(renameBtn);
+    actionsContainer.appendChild(deleteBtn);
+    
+    tabBtn.appendChild(actionsContainer);
+    tabBtnContainer.appendChild(tabBtn);
+    document.getElementById('tabButtons').appendChild(tabBtnContainer);
     
     // Create tab content
     const tabPane = document.createElement('div');
     tabPane.id = 'tab-' + tabId;
     tabPane.className = 'tab-pane active';
     tabPane.innerHTML = `
-        <h2>Tab ${tabId} - New Page</h2>
-        <p>Welcome to Tab ${tabId}! This is your new page. Each tab has independent content.</p>
+        <h2>${defaultName}</h2>
+        <p>Welcome to ${defaultName}! This is your new page. Each tab has independent content.</p>
         
         <form>
             <input type="text" placeholder="Enter your name" required>
             <input type="email" placeholder="Enter your email" required>
             <textarea placeholder="Enter your message"></textarea>
-            <button type="button" style="background: #667eea; color: white; padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600;">Submit</button>
+            <button type="button" class="submit-btn" onclick="event.preventDefault(); alert('Message submitted!')">Submit</button>
         </form>
     `;
     
@@ -42,9 +80,7 @@ function createTab() {
     
     // Deactivate all other tabs
     document.querySelectorAll('.tab-pane').forEach(pane => {
-        if (pane.id !== 'tab-' + tabId) {
-            pane.classList.remove('active');
-        }
+        pane.classList.remove('active');
     });
     
     document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -67,16 +103,51 @@ function switchTab(tabId) {
     });
     
     // Show selected tab
-    document.getElementById('tab-' + tabId).classList.add('active');
+    const tabPane = document.getElementById('tab-' + tabId);
+    const tabBtn = document.getElementById(`btn-${tabId}`);
     
-    // Add active class to button
-    event.target.classList.add('active');
+    if (tabPane) tabPane.classList.add('active');
+    if (tabBtn) tabBtn.classList.add('active');
+    
     activeTabId = tabId;
+}
+
+function renameTab(tabId) {
+    const currentName = tabNames[tabId] || `Tab ${tabId}`;
+    const newName = prompt('Enter new tab name:', currentName);
+    
+    if (newName === null) return; // User cancelled
+    if (newName.trim() === '') {
+        alert('Tab name cannot be empty!');
+        return;
+    }
+    
+    if (newName.trim().length > 20) {
+        alert('Tab name must be 20 characters or less!');
+        return;
+    }
+    
+    // Update tab name
+    tabNames[tabId] = newName.trim();
+    
+    // Update tab button
+    const tabBtn = document.getElementById(`btn-${tabId}`);
+    if (tabBtn) {
+        const nameSpan = tabBtn.querySelector('.tab-name');
+        if (nameSpan) nameSpan.textContent = newName.trim();
+    }
+    
+    // Update tab content heading
+    const tabPane = document.getElementById('tab-' + tabId);
+    if (tabPane) {
+        const heading = tabPane.querySelector('h2');
+        if (heading) heading.textContent = newName.trim();
+    }
 }
 
 function closeTab(tabId) {
     const tabPane = document.getElementById('tab-' + tabId);
-    const tabBtn = document.querySelector(`[onclick*="switchTab(${tabId})"]`);
+    const tabBtnContainer = document.getElementById(`tab-btn-${tabId}`);
     
     // Prevent closing if only one tab remains
     const totalTabs = document.querySelectorAll('.tab-pane').length;
@@ -87,16 +158,17 @@ function closeTab(tabId) {
     
     // Remove tab
     if (tabPane) tabPane.remove();
-    if (tabBtn) tabBtn.remove();
+    if (tabBtnContainer) tabBtnContainer.remove();
+    
+    // Remove from tabNames object
+    delete tabNames[tabId];
     
     // If closed tab was active, activate another tab
     if (activeTabId === tabId) {
-        const remainingBtn = document.querySelector('.tab-btn');
-        if (remainingBtn) {
-            remainingBtn.classList.add('active');
-            const nextTabId = remainingBtn.innerHTML.match(/Tab (\d+)/)[1];
-            document.getElementById('tab-' + nextTabId).classList.add('active');
-            activeTabId = nextTabId;
+        const firstTabBtn = document.querySelector('.tab-btn');
+        if (firstTabBtn) {
+            const nextTabId = parseInt(firstTabBtn.id.replace('btn-', ''));
+            switchTab(nextTabId);
         }
     }
 }
