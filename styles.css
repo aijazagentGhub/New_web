@@ -4,46 +4,32 @@
     --accent: #38bdf8;
     --dopamine: linear-gradient(135deg, #0ea5e9, #6366f1);
     --text: #f8fafc;
-    --muted: #94a3b8;
 }
 
-body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); margin: 0; padding: 0; overflow-x: hidden; }
-.sky-container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; }
+.sky-container { max-width: 1400px; margin: 0 auto; padding: 40px; }
 
-/* Logo & Header */
-.logo-text { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; margin: 0; }
-.logo-text span { background: var(--dopamine); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.live-status { color: var(--accent); font-weight: 700; font-size: 0.85rem; margin-top: 10px; }
+/* Tabs */
+.tab-navigation { display: flex; gap: 10px; margin-bottom: 30px; }
+.tab-item { background: var(--card-bg); padding: 12px 20px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.1); }
+.tab-item.active { background: var(--dopamine); border: none; }
+.rename-trigger { margin-left: 10px; opacity: 0.8; cursor: pointer; color: #fff; }
 
-/* Tabs Navigation */
-.tab-navigation { display: flex; gap: 15px; margin: 40px 0; align-items: center; }
-.tab-item { background: var(--card-bg); padding: 12px 24px; border-radius: 100px; cursor: pointer; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
-.tab-item.active { background: var(--dopamine); box-shadow: 0 10px 25px rgba(14, 165, 233, 0.4); border: none; }
-.tab-label { font-weight: 700; font-size: 0.9rem; }
-.rename-trigger { margin-left: 12px; font-size: 14px; opacity: 0.5; }
-.new-tab-trigger { background: transparent; color: var(--accent); border: 2px dashed var(--accent); padding: 10px 20px; border-radius: 100px; font-weight: 700; cursor: pointer; }
+/* News Grid */
+.news-dense-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.dopamine-card { background: var(--card-bg); border-radius: 24px; padding: 25px; border: 1px solid rgba(255,255,255,0.05); min-height: 300px; display: flex; flex-direction: column; justify-content: space-between; }
+.card-title { font-size: 1.4rem; margin: 10px 0; }
+.card-description { color: #94a3b8; line-height: 1.6; }
 
-/* News Grid - The "No Gap" Layout */
-.news-dense-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; }
-.dopamine-card { background: var(--card-bg); border-radius: 30px; border: 1px solid rgba(255,255,255,0.08); padding: 35px; display: flex; flex-direction: column; justify-content: space-between; min-height: 380px; backdrop-filter: blur(10px); transition: 0.4s; }
-.dopamine-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+/* Visibility */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
-.card-tag { color: var(--accent); font-weight: 800; font-size: 0.75rem; letter-spacing: 2px; }
-.card-title { font-size: 1.6rem; font-weight: 800; margin: 15px 0; line-height: 1.2; }
-.card-description { color: var(--muted); font-size: 1rem; line-height: 1.7; margin-bottom: 25px; }
-
-/* Action Buttons */
-.premium-btn { background: var(--dopamine); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-.action-btn { background: rgba(56, 189, 248, 0.1); color: var(--accent); text-decoration: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; border: 1px solid var(--accent); }
-
-/* Tool Hero */
-.hero-tool-card { background: var(--dopamine); padding: 40px; border-radius: 30px; margin-bottom: 40px; }
-.hero-badge { background: rgba(0,0,0,0.2); display: inline-block; padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; font-weight: 800; }
-.tool-table-wrapper { background: var(--card-bg); border-radius: 20px; padding: 20px; }
+/* Tools */
+.hero-tool-card { background: var(--dopamine); padding: 30px; border-radius: 24px; margin-bottom: 20px; }
+.tool-table-wrapper { background: var(--card-bg); border-radius: 15px; padding: 15px; }
 .tool-table { width: 100%; border-collapse: collapse; }
-.tool-table td { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.tool-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-@media (max-width: 768px) {
-    .news-dense-grid { grid-template-columns: 1fr; }
-    .sky-container { padding: 20px; }
-}
+.new-tab-trigger { background: transparent; color: var(--accent); border: 2px dashed var(--accent); border-radius: 50px; padding: 10px 20px; cursor: pointer; font-weight: 700; }
+.action-btn { color: var(--accent); text-decoration: none; font-weight: 700; border: 1px solid var(--accent); padding: 5px 15px; border-radius: 8px; }
