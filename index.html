@@ -11,16 +11,33 @@
     <div class="sky-container">
         <header class="main-header">
             <div class="logo-area">
-                <h1>AI Intelligence <span>Pulse</span></h1>
+                <h1>Intelligence <span>Pulse</span></h1>
                 <p class="date-badge">Saturday, April 25, 2026</p>
             </div>
-            <div class="header-actions">
-                <button id="exportBtn" class="glass-btn">📥 Export to CSV</button>
+            <div id="actionWrapper" class="header-actions">
+                <button id="exportBtn" class="glass-btn">📥 Export News</button>
             </div>
         </header>
 
-        <main class="news-grid" id="newsGrid">
-            </main>
+        <nav class="tab-navigation" id="tabBar">
+            <button class="tab-link active" onclick="switchTab('news')">Tab 1: NEWS</button>
+            <button class="tab-link" onclick="switchTab('tools')">Tab 2: AI TOOLS</button>
+            <button id="addTabBtn" class="add-tab-btn" onclick="addNewTab()">+ Add Tab</button>
+        </nav>
+
+        <main id="newsTab" class="tab-content active">
+            <div class="news-grid" id="newsGrid"></div>
+        </main>
+
+        <main id="toolsTab" class="tab-content">
+            <div class="tools-grid" id="toolsGrid"></div>
+        </main>
+
+        <main id="dynamicTab" class="tab-content">
+            <div class="news-grid" id="dynamicGrid">
+                <div class="empty-state">No content here yet. Use the "Add Tab" feature to create a new stream.</div>
+            </div>
+        </main>
     </div>
     <script src="script.js"></script>
 </body>
