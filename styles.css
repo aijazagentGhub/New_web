@@ -11,8 +11,8 @@ body {
 
 .container {
     background: white;
-    width: 90%;
-    max-width: 900px;
+    width: 95%;
+    max-width: 1000px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     overflow: hidden;
@@ -20,18 +20,12 @@ body {
 }
 
 .header {
-    background: #0369a1; /* Deep Sky Blue */
+    background: #0369a1;
     color: white;
     padding: 20px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.header h1 {
-    margin: 0;
-    font-size: 24px;
-    font-weight: 600;
 }
 
 .add-tab-btn {
@@ -42,12 +36,6 @@ body {
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
-}
-
-.add-tab-btn:hover {
-    background: white;
-    transform: translateY(-1px);
 }
 
 .tab-buttons {
@@ -61,17 +49,14 @@ body {
 .tab-item {
     padding: 10px 15px;
     background: #f1f5f9;
-    border: 1px solid #e2e8f0;
-    border-bottom: none;
     border-radius: 8px 8px 0 0;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 10px;
     color: #64748b;
-    transition: all 0.2s;
-    min-width: 100px;
-    justify-content: space-between;
+    border: 1px solid #e2e8f0;
+    border-bottom: none;
 }
 
 .tab-item.active {
@@ -79,68 +64,61 @@ body {
     color: #0369a1;
     font-weight: bold;
     border-top: 3px solid #0369a1;
-    margin-top: -3px;
 }
 
-.tab-title {
-    font-size: 14px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+/* Table Specific Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
-.rename-btn {
-    font-size: 12px;
-    color: #94a3b8;
+th {
+    background: #f1f5f9;
+    text-align: left;
+    padding: 12px;
+    border-bottom: 2px solid #e2e8f0;
+    color: #475569;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+input[type="text"], input[type="url"], input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.table-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-add-row {
+    background: #0ea5e9;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
     cursor: pointer;
-    padding: 2px;
 }
 
-.rename-btn:hover {
-    color: #0369a1;
-}
-
-.close-btn {
-    font-size: 16px;
-    color: #94a3b8;
-    font-weight: bold;
-}
-
-.close-btn:hover {
+.btn-delete-row {
+    background: #fee2e2;
     color: #ef4444;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 .tab-content {
-    padding: 40px;
-    min-height: 350px;
-    color: #334155;
-}
-
-.input-field {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    box-sizing: border-box;
-    font-size: 14px;
-}
-
-.input-field:focus {
-    outline: 2px solid #7dd3fc;
-    border-color: #0369a1;
-}
-
-.submit-btn {
-    background: #0369a1;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.submit-btn:hover {
-    background: #075985;
+    padding: 30px;
+    min-height: 400px;
 }
