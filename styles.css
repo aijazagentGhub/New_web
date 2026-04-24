@@ -4,27 +4,36 @@
     --sky-dark: #0369a1;
 }
 
-body { background: var(--sky-bg); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; }
-.sky-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+body { background: var(--sky-bg); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; color: #1e293b; }
+.sky-container { max-width: 1250px; margin: 0 auto; padding: 20px; }
 
-/* Rename & Tabs */
-.tab-navigation { display: flex; gap: 10px; border-bottom: 2px solid #e0f2fe; padding-bottom: 10px; margin-bottom: 30px; overflow-x: auto; }
-.tab-link { background: none; border: none; font-weight: 700; color: #64748b; padding: 10px 20px; cursor: pointer; border-radius: 10px; white-space: nowrap; }
+/* Navigation */
+.tab-navigation { display: flex; gap: 10px; border-bottom: 2px solid #e0f2fe; padding-bottom: 10px; margin-bottom: 30px; overflow-x: auto; align-items: center; }
+.tab-link { background: none; border: none; font-weight: 700; color: #64748b; padding: 12px 20px; cursor: pointer; border-radius: 12px; white-space: nowrap; display: flex; align-items: center; }
 .tab-link.active { background: rgba(14, 165, 233, 0.1); color: var(--sky-accent); }
-.rename-icon { font-size: 12px; margin-left: 8px; opacity: 0.5; }
-.rename-icon:hover { opacity: 1; color: var(--sky-dark); }
+.rename-icon { margin-left: 8px; font-size: 14px; opacity: 0.4; }
+.add-tab-btn { background: var(--sky-accent); color: white; border: none; border-radius: 10px; padding: 10px 15px; font-weight: 700; cursor: pointer; }
 
-/* Tools Table UI */
-.latest-launch-banner { background: white; border: 2px solid var(--sky-accent); padding: 20px; border-radius: 15px; margin-bottom: 30px; }
-.type-tag { background: var(--sky-accent); color: white; font-size: 10px; padding: 4px 10px; border-radius: 20px; font-weight: 800; }
-.section-title { color: var(--sky-dark); border-left: 4px solid var(--sky-accent); padding-left: 15px; margin: 30px 0 15px 0; }
-.tool-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; }
-.tool-table td { padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+/* Grid & Cards */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; }
+.card { background: white; border-radius: 24px; padding: 28px; height: 350px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px rgba(14, 165, 233, 0.05); }
+.card-title { color: var(--sky-dark); font-size: 1.25rem; font-weight: 700; line-height: 1.4; }
+.card-brief { color: #475569; font-size: 0.95rem; line-height: 1.6; }
 
+/* Tool Directory */
+.latest-launch-banner { background: white; border: 2px solid var(--sky-accent); padding: 24px; border-radius: 20px; margin-bottom: 30px; }
+.tool-table { width: 100%; border-collapse: collapse; background: white; border-radius: 15px; overflow: hidden; }
+.tool-table td { padding: 18px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+.type-tag { background: var(--sky-accent); color: white; font-size: 10px; padding: 4px 12px; border-radius: 20px; font-weight: 800; }
+
+/* Header */
 .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
-.glass-btn { border: 1px solid var(--sky-accent); background: white; color: var(--sky-accent); padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; margin-left: 10px; }
+.glass-btn { background: white; border: 1px solid var(--sky-accent); color: var(--sky-accent); padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+.btn-view { background: var(--sky-accent); color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: 700; text-align: center; }
 
 @media (max-width: 768px) {
-    .main-header { flex-direction: column; text-align: center; }
+    .main-header { flex-direction: column; gap: 15px; }
     .tool-table td { display: block; width: 100%; }
 }
