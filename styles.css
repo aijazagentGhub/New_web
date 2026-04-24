@@ -1,5 +1,5 @@
 body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Segoe UI', system-ui, sans-serif;
     background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
     margin: 0;
     display: flex;
@@ -11,11 +11,11 @@ body {
 .container {
     background: white;
     width: 95%;
-    max-width: 1150px;
+    max-width: 1100px;
     border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     border: 1px solid #7dd3fc;
-    min-height: 600px;
+    min-height: 550px;
 }
 
 .header {
@@ -55,7 +55,6 @@ body {
     gap: 10px;
     border: 1px solid #e2e8f0;
     border-bottom: none;
-    color: #475569;
 }
 
 .tab-item.active {
@@ -70,6 +69,7 @@ body {
 .data-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* Keeps columns stable */
 }
 
 .data-table th {
@@ -79,7 +79,7 @@ body {
     border-bottom: 2px solid #e2e8f0;
 }
 
-.data-table td { padding: 6px; border-bottom: 1px solid #f1f5f9; }
+.data-table td { padding: 8px; border-bottom: 1px solid #f1f5f9; }
 
 input {
     width: 100%;
@@ -93,17 +93,17 @@ input {
     background: #0ea5e9;
     color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: 10px 20px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 13px;
+    margin-top: 20px;
 }
 
 .delete-row-btn {
     background: #fee2e2;
     color: #ef4444;
     border: none;
-    padding: 4px 8px;
+    padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
 }
