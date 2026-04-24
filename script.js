@@ -1,13 +1,13 @@
 function renderDashboard() {
-    // --- TARGET TAB 1 (NEWS) ---
+    // --- STAGE 1: TAB 1 (NEWS) ONLY ---
     const newsGrid = document.getElementById('newsGrid');
     if (newsGrid) {
-        // Force clear any leaked tools data
+        // Force clear to prevent AI tools from appearing here
         newsGrid.innerHTML = ''; 
         
-        // Render exactly 6 News Cards
-        const displayNews = newsData.slice(0, 6);
-        newsGrid.innerHTML = displayNews.map(item => `
+        // Inject exactly 6 high-density news cards
+        const latestNews = newsData.slice(0, 6);
+        newsGrid.innerHTML = latestNews.map(item => `
             <div class="dopamine-card">
                 <div class="card-content">
                     <span class="card-tag">LATEST NEWS</span>
@@ -22,16 +22,15 @@ function renderDashboard() {
         `).join('');
     }
 
-    // --- TARGET TAB 2 (AI TOOLS) ---
+    // --- STAGE 2: TAB 2 (AI TOOLS) ONLY ---
     const latestRow = document.getElementById('latestToolRow');
     const toolsContainer = document.getElementById('toolsCategorized');
 
     if (latestRow && toolsContainer) {
-        // Clear containers before rendering
         latestRow.innerHTML = '';
         toolsContainer.innerHTML = '';
 
-        // Render Hero Tool
+        // Render Top Hero Tool
         const latest = toolsData.find(t => t.isNew) || toolsData[0];
         latestRow.innerHTML = `
             <div class="hero-tool-card">
@@ -41,7 +40,7 @@ function renderDashboard() {
             </div>
         `;
 
-        // Render Categorized Directory
+        // Render Categorized Tables
         const categories = [...new Set(toolsData.map(t => t.category))];
         toolsContainer.innerHTML = categories.map(cat => `
             <div class="tool-section">
