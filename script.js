@@ -1,253 +1,96 @@
-let tabCount = 1;
-let activeTabId = 1;
-let tabNames = {}; // Store custom tab names
+// Selecting elements from the HTML
+const tabButtons = document.getElementById('tabButtons');
+const tabContent = document.getElementById('tabContent');
+const addTabBtn = document.getElementById('addTabBtn');
 
-// Initialize with first tab
-document.addEventListener('DOMContentLoaded', function() {
-    createTab();
-    document.getElementById('addTabBtn').addEventListener('click', createTab);
-    createRenameModal();
-});
+// This array will hold our tab data
+let tabs = [];
 
-function createTab() {
-    tabCount++;
-    const tabId = tabCount;
-    const defaultName = `Tab ${tabId}`;
-    tabNames[tabId] = defaultName;
-    
-    // Create tab button container
-    const tabBtnContainer = document.createElement('div');
-    tabBtnContainer.className = 'tab-btn-container';
-    tabBtnContainer.id = `tab-btn-${tabId}`;
-    
-    // Create tab button
-    const tabBtn = document.createElement('button');
-    tabBtn.className = 'tab-btn active';
-    tabBtn.id = `btn-${tabId}`;
-    tabBtn.innerHTML = `<span class="tab-name">${defaultName}</span>`;
-    tabBtn.onclick = (e) => {
-        if (e.target.closest('.tab-action-btn')) return;
-        switchTab(tabId);
-    };
-    
-    // Create action buttons container
-    const actionsContainer = document.createElement('div');
-    actionsContainer.className = 'tab-actions';
-    
-    // Rename button
-    const renameBtn = document.createElement('button');
-    renameBtn.className = 'tab-action-btn rename-btn';
-    renameBtn.title = 'Rename tab';
-    renameBtn.innerHTML = '✎';
-    renameBtn.onclick = (e) => {
-        e.stopPropagation();
-        renameTab(tabId);
-    };
-    
-    // Delete button
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'tab-action-btn delete-btn';
-    deleteBtn.title = 'Delete tab';
-    deleteBtn.innerHTML = '×';
-    deleteBtn.onclick = (e) => {
-        e.stopPropagation();
-        closeTab(tabId);
-    };
-    
-    actionsContainer.appendChild(renameBtn);
-    actionsContainer.appendChild(deleteBtn);
-    
-    tabBtn.appendChild(actionsContainer);
-    tabBtnContainer.appendChild(tabBtn);
-    document.getElementById('tabButtons').appendChild(tabBtnContainer);
-    
-    // Create tab content
-    const tabPane = document.createElement('div');
-    tabPane.id = 'tab-' + tabId;
-    tabPane.className = 'tab-pane active';
-    tabPane.innerHTML = `
-        <h2>${defaultName}</h2>
-        <p>Welcome to ${defaultName}! This is your new page. Each tab has independent content.</p>
-        
-        <form>
-            <input type="text" placeholder="Enter your name" required>
-            <input type="email" placeholder="Enter your email" required>
-            <textarea placeholder="Enter your message"></textarea>
-            <button type="button" class="submit-btn" onclick="event.preventDefault(); alert('Message submitted!')">Submit</button>
-        </form>
-    `;
-    
-    document.getElementById('tabContent').appendChild(tabPane);
-    
-    // Deactivate all other tabs
-    document.querySelectorAll('.tab-pane').forEach(pane => {
-        pane.classList.remove('active');
-    });
-    
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    
-    tabBtn.classList.add('active');
-    activeTabId = tabId;
+// 1. Function to save tabs to the browser's memory
+function saveToLocalStorage() {
+    localStorage.setItem('myTabs', JSON.stringify(tabs));
 }
 
-function switchTab(tabId) {
-    // Hide all tabs
-    document.querySelectorAll('.tab-pane').forEach(pane => {
-        pane.classList.remove('active');
-    });
-    
-    // Remove active class from all buttons
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    
-    // Show selected tab
-    const tabPane = document.getElementById('tab-' + tabId);
-    const tabBtn = document.getElementById(`btn-${tabId}`);
-    
-    if (tabPane) tabPane.classList.add('active');
-    if (tabBtn) tabBtn.classList.add('active');
-    
-    activeTabId = tabId;
-}
+// 2. Function to display the tabs on the screen
+function renderTabs() {
+    tabButtons.innerHTML = '';
+    tabContent.innerHTML = '';
 
-// Create rename modal dialog
-function createRenameModal() {
-    const modalHTML = `
-        <div id="renameModal" class="rename-modal">
-            <div class="rename-modal-content">
-                <div class="rename-modal-header">
-                    <h3>Rename Tab</h3>
-                    <button class="rename-modal-close" onclick="closeRenameModal()">×</button>
-                </div>
-                <div class="rename-modal-body">
-                    <label for="renameInput">Enter new tab name:</label>
-                    <input type="text" id="renameInput" class="rename-input" placeholder="Type new name..." maxlength="20">
-                    <div class="rename-character-count">
-                        <span id="charCount">0</span>/20 characters
-                    </div>
-                </div>
-                <div class="rename-modal-footer">
-                    <button class="rename-btn-cancel" onclick="closeRenameModal()">Cancel</button>
-                    <button class="rename-btn-save" onclick="saveRename()">Save</button>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
-    // Add character counter
-    const input = document.getElementById('renameInput');
-    input.addEventListener('input', function() {
-        document.getElementById('charCount').textContent = this.value.length;
-    });
-    
-    // Allow Enter key to save
-    input.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            saveRename();
+    tabs.forEach((tab, index) => {
+        // Create the Tab Button
+        const btn = document.createElement('div');
+        btn.className = `tab-item ${tab.active ? 'active' : ''}`;
+        btn.innerHTML = `
+            <span onclick="setActive(${index})">${tab.title}</span>
+            <span class="close-btn" onclick="deleteTab(event, ${index})">×</span>
+        `;
+        tabButtons.appendChild(btn);
+
+        // Create the Tab Content Area
+        if (tab.active) {
+            const content = document.createElement('div');
+            content.innerHTML = `
+                <h2>${tab.title}</h2>
+                <p>Welcome to ${tab.title}! This is your saved page.</p>
+                <input type="text" placeholder="Enter your name" class="input-field">
+                <input type="email" placeholder="Enter your email" class="input-field">
+                <textarea placeholder="Enter your message" class="input-field"></textarea>
+                <button class="submit-btn">Submit</button>
+            `;
+            tabContent.appendChild(content);
         }
     });
+    
+    saveToLocalStorage();
 }
 
-// Open rename modal
-function renameTab(tabId) {
-    const currentName = tabNames[tabId] || `Tab ${tabId}`;
-    const input = document.getElementById('renameInput');
+// 3. Logic to add a new tab
+function addNewTab() {
+    // Deactivate all existing tabs
+    tabs.forEach(t => t.active = false);
     
-    input.value = currentName;
-    input.focus();
-    input.select();
-    document.getElementById('charCount').textContent = currentName.length;
+    // Add the new tab
+    const newId = tabs.length + 1;
+    tabs.push({
+        title: `Tab ${newId}`,
+        active: true
+    });
     
-    // Store current tab ID for saving
-    window.currentRenameTabId = tabId;
-    
-    // Show modal
-    document.getElementById('renameModal').classList.add('show');
+    renderTabs();
 }
 
-// Save renamed tab
-function saveRename() {
-    const tabId = window.currentRenameTabId;
-    const newName = document.getElementById('renameInput').value.trim();
+// 4. Logic to switch between tabs
+window.setActive = function(index) {
+    tabs.forEach(t => t.active = false);
+    tabs[index].active = true;
+    renderTabs();
+};
+
+// 5. Logic to delete a tab
+window.deleteTab = function(event, index) {
+    event.stopPropagation(); // Prevents clicking the tab when clicking "X"
+    tabs.splice(index, 1);
     
-    if (newName === '') {
-        alert('Tab name cannot be empty!');
-        return;
+    // If we deleted the active tab, make the first remaining one active
+    if (tabs.length > 0) {
+        const hasActive = tabs.some(t => t.active);
+        if (!hasActive) tabs[0].active = true;
     }
     
-    if (newName.length > 20) {
-        alert('Tab name must be 20 characters or less!');
-        return;
+    renderTabs();
+};
+
+// 6. INITIAL LOAD: Check browser memory when page opens
+function init() {
+    const saved = localStorage.getItem('myTabs');
+    if (saved && JSON.parse(saved).length > 0) {
+        tabs = JSON.parse(saved);
+    } else {
+        // Default first tab if memory is empty
+        tabs = [{ title: 'Tab 1', active: true }];
     }
-    
-    // Update tab name
-    tabNames[tabId] = newName;
-    
-    // Update tab button
-    const tabBtn = document.getElementById(`btn-${tabId}`);
-    if (tabBtn) {
-        const nameSpan = tabBtn.querySelector('.tab-name');
-        if (nameSpan) nameSpan.textContent = newName;
-    }
-    
-    // Update tab content heading
-    const tabPane = document.getElementById('tab-' + tabId);
-    if (tabPane) {
-        const heading = tabPane.querySelector('h2');
-        if (heading) heading.textContent = newName;
-        
-        // Update welcome text
-        const para = tabPane.querySelector('p');
-        if (para) para.textContent = `Welcome to ${newName}! This is your new page. Each tab has independent content.`;
-    }
-    
-    closeRenameModal();
+    renderTabs();
 }
 
-// Close rename modal
-function closeRenameModal() {
-    document.getElementById('renameModal').classList.remove('show');
-    document.getElementById('renameInput').value = '';
-    document.getElementById('charCount').textContent = '0';
-}
-
-// Close modal when clicking outside
-document.addEventListener('click', function(e) {
-    const modal = document.getElementById('renameModal');
-    if (e.target === modal) {
-        closeRenameModal();
-    }
-});
-
-function closeTab(tabId) {
-    const tabPane = document.getElementById('tab-' + tabId);
-    const tabBtnContainer = document.getElementById(`tab-btn-${tabId}`);
-    
-    // Prevent closing if only one tab remains
-    const totalTabs = document.querySelectorAll('.tab-pane').length;
-    if (totalTabs <= 1) {
-        alert('You must keep at least one tab open!');
-        return;
-    }
-    
-    // Remove tab
-    if (tabPane) tabPane.remove();
-    if (tabBtnContainer) tabBtnContainer.remove();
-    
-    // Remove from tabNames object
-    delete tabNames[tabId];
-    
-    // If closed tab was active, activate another tab
-    if (activeTabId === tabId) {
-        const firstTabBtn = document.querySelector('.tab-btn');
-        if (firstTabBtn) {
-            const nextTabId = parseInt(firstTabBtn.id.replace('btn-', ''));
-            switchTab(nextTabId);
-        }
-    }
-}
+addTabBtn.addEventListener('click', addNewTab);
+init();
