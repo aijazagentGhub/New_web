@@ -1,59 +1,129 @@
-/* Core Table Structure */
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed; /* Crucial for controlling width */
+:root {
+    --bg-dark: #020617;
+    --glass-bg: rgba(15, 23, 42, 0.6);
+    --neon-blue: #38bdf8;
+    --neon-purple: #818cf8;
+    --text-primary: #f8fafc;
+    --text-dim: #94a3b8;
 }
 
-.data-table th, .data-table td {
-    padding: 12px 8px;
-    border-bottom: 1px solid #e2e8f0;
-    vertical-align: top;
+body {
+    background: var(--bg-dark);
+    /* Ambient neon orbs in background */
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(129, 140, 248, 0.15) 0%, transparent 40%);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    min-height: 100vh;
 }
 
-/* Dynamic Column Sizing */
-.col-title { width: 30%; } /* Increased space for headline */
-.col-brief { width: 50%; } /* Primary space for insights */
-.col-icon  { width: 50px; text-align: center; } /* Compact Icon */
-.col-date  { width: 130px; } /* Compact Date */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
 
-/* Input & Textarea Optimization */
-.col-title input {
-    width: 100%;
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+}
+
+/* Glassmorphic Grid */
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+}
+
+.news-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 280px;
+}
+
+.news-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    color: var(--text-primary);
+}
+
+.card-brief {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-date {
+    font-size: 0.8rem;
+    color: var(--neon-purple);
     font-weight: 600;
-    border: none;
-    background: transparent;
-    color: #1e293b;
 }
 
-textarea {
-    width: 100%;
-    min-height: 70px;
-    padding: 6px;
-    font-size: 13px;
-    line-height: 1.5;
-    border: 1px solid #f1f5f9;
-    border-radius: 4px;
-    resize: none;
+.btn-open {
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--neon-blue);
+    padding: 8px 16px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: 0.2s;
+    border: 1px solid rgba(56, 189, 248, 0.2);
 }
 
-/* Slim Date & Link */
-.col-date input {
-    font-size: 12px;
-    border: none;
-    background: transparent;
+.btn-open:hover {
+    background: var(--neon-blue);
+    color: var(--bg-dark);
 }
 
-.icon-link {
-    color: #0369a1;
-    display: inline-flex;
-    padding: 6px;
-    border-radius: 50%;
-    transition: all 0.2s;
-}
-
-.icon-link:hover {
-    background-color: #f0f9ff;
-    color: #0284c7;
-    transform: scale(1.1);
+.sync-badge {
+    background: rgba(129, 140, 248, 0.1);
+    border: 1px solid var(--neon-purple);
+    color: var(--neon-purple);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
 }
