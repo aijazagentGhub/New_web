@@ -1,43 +1,102 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: white;
+    width: 90%;
+    max-width: 900px;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+.header {
+    background: #6366f1;
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-tab-btn {
+    background: white;
+    color: #6366f1;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.add-tab-btn:hover {
+    background: #f0f0f0;
+}
+
+.tab-buttons {
+    display: flex;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 10px 10px 0 10px;
+}
+
 .tab-item {
+    padding: 10px 20px;
+    background: #e2e8f0;
+    margin-right: 5px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
     display: flex;
     align-items: center;
-    padding: 8px 15px;
-    cursor: pointer;
-    background: #f0f0f0;
-    margin-right: 5px;
-    border-radius: 5px 5px 0 0;
+    gap: 12px;
+    color: #64748b;
 }
 
 .tab-item.active {
     background: white;
-    border-bottom: 2px solid #6366f1;
+    color: #6366f1;
     font-weight: bold;
+    border: 1px solid #e2e8f0;
+    border-bottom: 1px solid white;
+    margin-bottom: -1px;
 }
 
 .close-btn {
-    margin-left: 10px;
-    color: #999;
-    font-weight: bold;
+    font-size: 18px;
+    line-height: 1;
 }
 
 .close-btn:hover {
-    color: red;
+    color: #ef4444;
+}
+
+.tab-content {
+    padding: 40px;
+    min-height: 300px;
 }
 
 .input-field {
-    display: block;
     width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    box-sizing: border-box;
 }
 
 .submit-btn {
     background: #6366f1;
     color: white;
-    padding: 10px 20px;
     border: none;
-    border-radius: 4px;
+    padding: 12px 30px;
+    border-radius: 6px;
     cursor: pointer;
 }
