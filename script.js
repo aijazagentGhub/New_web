@@ -3,33 +3,33 @@ const tabContent = document.getElementById('tabContent');
 const addTabBtn = document.getElementById('addTabBtn');
 const syncStatus = document.getElementById('syncStatus');
 
-// TODAY'S TOP BREAKTHROUGHS (April 24, 2026)
-const fallbackNews = [
+// TOP 2 NEWS FOR APRIL 24, 2026 (Fallback so it's never blank)
+const initialNews = [
     { 
-        title: "DeepSeek V4 Launch: New Open-Source Models Challenge GPT-5.4 Performance", 
-        url: "https://www.seattlepi.com/news/world/china-s-deepseek-rolls-out-a-long-anticipated-a22223734", 
+        title: "DeepSeek V4: China's New Open-Source Model Rivals GPT-4o Performance", 
+        url: "https://www.deepseek.com/news/v4-announcement", 
         date: "2026-04-24" 
     },
     { 
-        title: "OpenAI GPT-5.5 Released: Advanced Reasoning and Agentic Workflows", 
-        url: "https://openai.com/news/gpt-5-5-announcement", 
+        title: "OpenAI GPT-5.5 Preview: Enhanced Agentic Capabilities Released for Developers", 
+        url: "https://openai.com/news/gpt-5-5-preview", 
         date: "2026-04-24" 
     }
 ];
 
-// Initialize Tabs
-let tabs = JSON.parse(localStorage.getItem('myAutoNewsTabs')) || [
+// Initialize Tabs - Checks if "Latest AI news" exists, otherwise creates it with data
+let tabs = JSON.parse(localStorage.getItem('myAutoNewsTabs_v2')) || [
     { 
         id: "news-tab-001", 
         title: "Latest AI news", 
         active: true, 
-        rows: fallbackNews // Pre-populated so it's never blank
+        rows: initialNews 
     }
 ];
 
-// Automated Fetcher with fallbacks
+// Fetcher Logic
 async function fetchLiveAINews() {
-    syncStatus.innerText = "Syncing latest headlines...";
+    syncStatus.innerText = "Syncing...";
     const RSS_URL = "https://www.wired.com/feed/category/ai/latest/rss";
     const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
 
@@ -50,21 +50,21 @@ async function fetchLiveAINews() {
                 const uniqueNewItems = newItems.filter(item => !existingUrls.has(item.url));
                 
                 if (uniqueNewItems.length > 0) {
-                    newsTab.rows = [...uniqueNewItems, ...newsTab.rows].slice(0, 15);
+                    newsTab.rows = [...uniqueNewItems, ...newsTab.rows].slice(0, 20);
                     render();
-                    syncStatus.innerText = "Updated with newest stories.";
+                    syncStatus.innerText = "Updated!";
                 } else {
-                    syncStatus.innerText = "Already up to date.";
+                    syncStatus.innerText = "Up to date";
                 }
             }
         }
     } catch (e) {
-        syncStatus.innerText = "Using offline data.";
+        syncStatus.innerText = "Showing stored news";
     }
 }
 
 function saveToMemory() {
-    localStorage.setItem('myAutoNewsTabs', JSON.stringify(tabs));
+    localStorage.setItem('myAutoNewsTabs_v2', JSON.stringify(tabs));
 }
 
 function render() {
@@ -86,7 +86,7 @@ function render() {
             wrapper.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <h2>${tab.title}</h2>
-                    <span style="color:#64748b; font-size:12px;">Data Persisted Locally</span>
+                    <button class="add-row-btn" style="background:#0369a1; padding: 5px 10px;" onclick="fetchLiveAINews()">↻ Refresh News</button>
                 </div>
                 <table class="data-table">
                     <thead>
@@ -99,7 +99,7 @@ function render() {
                     </thead>
                     <tbody id="tableBody"></tbody>
                 </table>
-                <button class="add-row-btn" onclick="addRow('${tab.id}')">+ Add Row</button>
+                <button class="add-row-btn" style="margin-top:20px;" onclick="addRow('${tab.id}')">+ Add Custom Row</button>
             `;
             tabContent.appendChild(wrapper);
             renderRows(tab);
@@ -132,7 +132,7 @@ window.updateCell = (id, idx, field, val) => {
 
 window.addRow = (id) => {
     const tab = tabs.find(t => t.id === id);
-    tab.rows.push({ title: "New Story", url: "https://", date: new Date().toISOString().split('T')[0] });
+    tab.rows.push({ title: "New AI Event", url: "https://", date: new Date().toISOString().split('T')[0] });
     render();
 };
 
