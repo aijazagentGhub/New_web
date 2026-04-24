@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Tab Manager - Data Grid</title>
-    <link rel="stylesheet" href="styles.css?v=1.0.3">
+    <title>AI News Auto-Tracker</title>
+    <link rel="stylesheet" href="styles.css?v=1.0.7">
 </head>
 <body>
 
     <div class="container">
         <div class="header">
             <h1>Dynamic Tab Manager</h1>
-            <button id="addTabBtn" class="add-tab-btn">+ Add Tab</button>
+            <div class="header-right">
+                <span id="syncStatus" style="font-size: 12px; margin-right: 15px; opacity: 0.8;"></span>
+                <button id="addTabBtn" class="add-tab-btn">+ Add Tab</button>
+            </div>
         </div>
 
         <div class="tabs-container">
-            <div class="tab-buttons" id="tabButtons">
-                </div>
+            <div class="tab-buttons" id="tabButtons"></div>
         </div>
 
-        <div class="tab-content" id="tabContent">
-            </div>
+        <div class="tab-content" id="tabContent"></div>
     </div>
 
-    <script src="script.js?v=1.0.3"></script>
+    <script src="script.js?v=1.0.7"></script>
 </body>
 </html>
