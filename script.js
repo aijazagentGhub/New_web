@@ -1,96 +1,79 @@
-// Selecting elements from the HTML
 const tabButtons = document.getElementById('tabButtons');
 const tabContent = document.getElementById('tabContent');
 const addTabBtn = document.getElementById('addTabBtn');
 
-// This array will hold our tab data
-let tabs = [];
+// Load tabs from browser memory or start with one default tab
+let tabs = JSON.parse(localStorage.getItem('myPersistentTabs')) || [
+    { id: Date.now(), title: "Tab 1", active: true }
+];
 
-// 1. Function to save tabs to the browser's memory
-function saveToLocalStorage() {
-    localStorage.setItem('myTabs', JSON.stringify(tabs));
+// Function to save the current state to memory
+function saveToMemory() {
+    localStorage.setItem('myPersistentTabs', JSON.stringify(tabs));
 }
 
-// 2. Function to display the tabs on the screen
-function renderTabs() {
+// Function to update the UI
+function render() {
     tabButtons.innerHTML = '';
     tabContent.innerHTML = '';
 
-    tabs.forEach((tab, index) => {
-        // Create the Tab Button
+    tabs.forEach((tab) => {
+        // 1. Create the button element
         const btn = document.createElement('div');
         btn.className = `tab-item ${tab.active ? 'active' : ''}`;
         btn.innerHTML = `
-            <span onclick="setActive(${index})">${tab.title}</span>
-            <span class="close-btn" onclick="deleteTab(event, ${index})">×</span>
+            <span onclick="setActive(${tab.id})">${tab.title}</span>
+            <span class="close-btn" onclick="removeTab(event, ${tab.id})">×</span>
         `;
         tabButtons.appendChild(btn);
 
-        // Create the Tab Content Area
+        // 2. Create the content area (only for the active tab)
         if (tab.active) {
-            const content = document.createElement('div');
-            content.innerHTML = `
+            tabContent.innerHTML = `
                 <h2>${tab.title}</h2>
-                <p>Welcome to ${tab.title}! This is your saved page.</p>
+                <p>Welcome to ${tab.title}! This content is now saved.</p>
                 <input type="text" placeholder="Enter your name" class="input-field">
                 <input type="email" placeholder="Enter your email" class="input-field">
                 <textarea placeholder="Enter your message" class="input-field"></textarea>
                 <button class="submit-btn">Submit</button>
             `;
-            tabContent.appendChild(content);
         }
     });
-    
-    saveToLocalStorage();
+
+    saveToMemory();
 }
 
-// 3. Logic to add a new tab
-function addNewTab() {
-    // Deactivate all existing tabs
+// Logic to add a new tab
+addTabBtn.onclick = () => {
     tabs.forEach(t => t.active = false);
-    
-    // Add the new tab
-    const newId = tabs.length + 1;
+    const newId = Date.now();
     tabs.push({
-        title: `Tab ${newId}`,
+        id: newId,
+        title: `Tab ${tabs.length + 1}`,
         active: true
     });
-    
-    renderTabs();
-}
-
-// 4. Logic to switch between tabs
-window.setActive = function(index) {
-    tabs.forEach(t => t.active = false);
-    tabs[index].active = true;
-    renderTabs();
+    render();
 };
 
-// 5. Logic to delete a tab
-window.deleteTab = function(event, index) {
-    event.stopPropagation(); // Prevents clicking the tab when clicking "X"
-    tabs.splice(index, 1);
-    
-    // If we deleted the active tab, make the first remaining one active
-    if (tabs.length > 0) {
-        const hasActive = tabs.some(t => t.active);
-        if (!hasActive) tabs[0].active = true;
-    }
-    
-    renderTabs();
+// Logic to switch tabs
+window.setActive = (id) => {
+    tabs.forEach(t => t.active = (t.id === id));
+    render();
 };
 
-// 6. INITIAL LOAD: Check browser memory when page opens
-function init() {
-    const saved = localStorage.getItem('myTabs');
-    if (saved && JSON.parse(saved).length > 0) {
-        tabs = JSON.parse(saved);
-    } else {
-        // Default first tab if memory is empty
-        tabs = [{ title: 'Tab 1', active: true }];
+// Logic to delete a tab
+window.removeTab = (event, id) => {
+    event.stopPropagation(); // Prevents switching to the tab while deleting
+    if (tabs.length === 1) return; // Keep at least one tab
+    
+    tabs = tabs.filter(t => t.id !== id);
+    
+    // If we deleted the active one, make the first one active
+    if (!tabs.find(t => t.active)) {
+        tabs[0].active = true;
     }
-    renderTabs();
-}
+    render();
+};
 
-addTabBtn.addEventListener('click', addNewTab);
-init();
+// Initial run
+render();
