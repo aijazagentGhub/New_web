@@ -8,32 +8,21 @@
         :root { --primary: #0077b6; --bg: #f4f9fc; --card-white: #ffffff; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); padding: 40px; color: #333; }
-        
         .container { max-width: 1100px; margin: 0 auto; }
         header { margin-bottom: 30px; }
         header h1 { font-size: 32px; color: var(--primary); font-weight: 800; }
-        
-        /* Navigation Tabs */
         .controls { display: flex; gap: 15px; margin-bottom: 30px; align-items: center; border-bottom: 1px solid #dee2e6; padding-bottom: 20px; }
-        .btn { padding: 12px 24px; border-radius: 10px; border: 1px solid #ddd; cursor: pointer; font-weight: 600; background: white; color: #666; transition: 0.3s; }
+        .btn { padding: 12px 24px; border-radius: 10px; border: 1px solid #ddd; cursor: pointer; font-weight: 600; background: white; color: #666; }
         .btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,119,182,0.2); }
-        .sync-label { margin-left: auto; font-size: 12px; color: #aaa; font-style: italic; }
-
-        /* Grids and Sections */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        .card { background: var(--card-white); padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border-top: 5px solid var(--primary); position: relative; }
+        .badge { background: #e1f5fe; color: var(--primary); font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 6px; position: absolute; top: 20px; right: 20px; }
+        .card h3 { font-size: 19px; margin: 20px 0 12px 0; line-height: 1.4; color: #1a2a3a; }
+        .card p { font-size: 14px; color: #5a6c7d; line-height: 1.6; margin-bottom: 25px; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f1f1; padding-top: 15px; font-size: 13px; font-weight: bold; }
+        .card-footer a { color: var(--primary); text-decoration: none; }
         .page { display: none; }
         .page.active { display: block; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-
-        /* Professional Card Design */
-        .card { background: var(--card-white); padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border-top: 5px solid var(--primary); position: relative; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); }
-        .badge { background: #e1f5fe; color: var(--primary); font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 6px; position: absolute; top: 20px; right: 20px; }
-        
-        .card h3 { font-size: 19px; margin: 20px 0 12px 0; line-height: 1.4; color: #1a2a3a; min-height: 52px; }
-        .card p { font-size: 14px; color: #5a6c7d; line-height: 1.6; margin-bottom: 25px; min-height: 60px; }
-        
-        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f1f1; padding-top: 15px; font-size: 13px; font-weight: bold; }
-        .card-footer a { color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 5px; }
     </style>
 </head>
 <body>
@@ -47,41 +36,30 @@
     <div class="controls">
         <button id="btn-news" class="btn active" onclick="switchTab('news')">NEWS STREAM</button>
         <button id="btn-toolkit" class="btn" onclick="switchTab('toolkit')">AI TOOLKIT</button>
-        <span class="sync-label">Auto-syncing via Pipedream Agent...</span>
+        <span style="margin-left:auto; font-size:12px; color:#aaa;">Auto-syncing via Pipedream Agent...</span>
     </div>
 
     <div id="section-news" class="page active">
         <div id="news-container" class="grid">
-            <p>Scanning intelligence feeds...</p>
+            <div class="card">
+                <span class="badge">LATEST</span>
+                <h3>Llama 3 Deployment Scales</h3>
+                <p>Meta's latest open-source model is seeing record-breaking adoption in enterprise sectors for private cloud hosting.</p>
+                <div class="card-footer"><span>2H AGO</span><a href="https://ai.meta.com" target="_blank">READ FULL ↗</a></div>
+            </div>
+            <div class="card">
+                <span class="badge">TRENDING</span>
+                <h3>Gemini 1.5 Pro Updates</h3>
+                <p>Google introduces massive context window improvements, allowing for the analysis of entire codebases in one prompt.</p>
+                <div class="card-footer"><span>4H AGO</span><a href="https://blog.google" target="_blank">READ FULL ↗</a></div>
+            </div>
         </div>
     </div>
 
     <div id="section-toolkit" class="page">
         <div class="grid">
-            <div class="card">
-                <span class="badge">TOOL</span>
-                <h3>Perplexity AI</h3>
-                <p>Real-time AI search engine for academic and technical research with cited sources.</p>
-                <div class="card-footer"><span>Search</span><a href="https://www.perplexity.ai" target="_blank">OPEN ↗</a></div>
-            </div>
-            <div class="card">
-                <span class="badge">TOOL</span>
-                <h3>Claude.ai</h3>
-                <p>Advanced reasoning and coding assistant with high-context window capabilities.</p>
-                <div class="card-footer"><span>Analysis</span><a href="https://claid.ai" target="_blank">OPEN ↗</a></div>
-            </div>
-            <div class="card">
-                <span class="badge">TOOL</span>
-                <h3>ChatGPT (GPT-4o)</h3>
-                <p>Versatile multi-modal agent for drafting, brainstorming, and complex task execution.</p>
-                <div class="card-footer"><span>General</span><a href="https://chat.openai.com" target="_blank">OPEN ↗</a></div>
-            </div>
-            <div class="card">
-                <span class="badge">TOOL</span>
-                <h3>Consensus</h3>
-                <p>AI search engine that finds answers in scientific research papers directly.</p>
-                <div class="card-footer"><span>Science</span><a href="https://consensus.app" target="_blank">OPEN ↗</a></div>
-            </div>
+            <div class="card"><span class="badge">TOOL</span><h3>Perplexity AI</h3><p>Real-time AI search engine for research.</p><div class="card-footer"><span>Search</span><a href="https://www.perplexity.ai" target="_blank">OPEN ↗</a></div></div>
+            <div class="card"><span class="badge">TOOL</span><h3>Claude.ai</h3><p>Advanced reasoning and coding assistant.</p><div class="card-footer"><span>Analysis</span><a href="https://claude.ai" target="_blank">OPEN ↗</a></div></div>
         </div>
     </div>
 </div>
@@ -90,51 +68,46 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-    // 1. YOUR CONFIG (Make sure these match your Firebase project)
     const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
-        projectId: "YOUR_PROJECT_ID",
-        appId: "YOUR_APP_ID"
+apiKey: "AIzaSyAnnzBIK2Y0P1Gn8_4I6ZOu2z0P1LEeDk0",
+  authDomain: "aijazideas.firebaseapp.com",
+  databaseURL: "https://aijazideas-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "aijazideas",
+  storageBucket: "aijazideas.firebasestorage.app",
+  messagingSenderId: "822948950064",
+  appId: "1:822948950064:web:031df081b41175ef3a7df5"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 2. Responsive Tab Logic
-    function switchTab(tabName) {
+    function switchTab(name) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-        
-        document.getElementById('section-' + tabName).classList.add('active');
-        document.getElementById('btn-' + tabName).classList.add('active');
+        document.getElementById('section-' + name).classList.add('active');
+        document.getElementById('btn-' + name).classList.add('active');
     }
 
-    // 3. Smart News Listener (Limit to Latest 6)
+    // LISTENER (Adds live news to the TOP of the pre-loaded list)
     db.ref('intelligence_pulse/news').limitToLast(6).on('value', (snap) => {
-        const container = document.getElementById('news-container');
         const data = snap.val();
-        
         if (data) {
-            container.innerHTML = '';
-            // Sort keys to show newest first
-            const keys = Object.keys(data).sort().reverse();
-            
-            keys.forEach(key => {
+            const container = document.getElementById('news-container');
+            // Keep the pre-loaded ones, just add new ones on top
+            Object.keys(data).reverse().forEach(key => {
                 const item = data[key];
-                const title = item.title || "AI Research Update";
-                const summary = item.summary || "Agent is summarizing the latest intelligence pulse...";
-                const url = item.url || "#";
+                if (document.getElementById(key)) return; // Prevent duplicates
 
-                container.innerHTML += `
-                    <div class="card">
-                        <span class="badge">PULSE</span>
-                        <h3>${title}</h3>
-                        <p>${summary}</p>
+                const html = `
+                    <div class="card" id="${key}">
+                        <span class="badge">LIVE PULSE</span>
+                        <h3>${item.title || "AI Insight"}</h3>
+                        <p>${item.summary || "Summary loading..."}</p>
                         <div class="card-footer">
-                            <span>TODAY</span>
-                            <a href="${url}" target="_blank">READ FULL NEWS ↗</a>
+                            <span>JUST NOW</span>
+                            <a href="${item.url || '#'}" target="_blank">READ FULL ↗</a>
                         </div>
                     </div>`;
+                container.insertAdjacentHTML('afterbegin', html);
             });
         }
     });
