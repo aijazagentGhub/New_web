@@ -9,19 +9,18 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 40px; color: #333; }
         .container { max-width: 1100px; margin: 0 auto; }
-        header { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
+        header { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
         header h1 { font-size: 32px; color: var(--primary); font-weight: 800; }
-        .controls { display: flex; gap: 15px; margin-bottom: 30px; align-items: center; border-bottom: 1px solid #dee2e6; padding-bottom: 20px; }
-        .btn { padding: 12px 24px; border-radius: 10px; border: 1px solid #ddd; cursor: pointer; font-weight: 600; background: white; color: #666; transition: 0.3s; }
+        .controls { display: flex; gap: 15px; margin-bottom: 30px; border-bottom: 1px solid #dee2e6; padding-bottom: 20px; }
+        .btn { padding: 12px 24px; border-radius: 10px; border: 1px solid #ddd; cursor: pointer; font-weight: 600; background: white; transition: 0.3s; }
         .btn.active { background: var(--primary); color: white; border-color: var(--primary); }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-        .card { background: var(--card-white); padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border-top: 5px solid var(--primary); position: relative; display: flex; flex-direction: column; }
-        .badge { background: #e1f5fe; color: var(--primary); font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 6px; position: absolute; top: 20px; right: 20px; }
-        .card h3 { font-size: 18px; margin: 20px 0 12px 0; color: #1a2a3a; min-height: 50px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .card p { font-size: 14px; color: #5a6c7d; line-height: 1.6; margin-bottom: 25px; flex-grow: 1; }
+        .card { background: var(--card-white); padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border-top: 5px solid var(--primary); display: flex; flex-direction: column; height: 100%; transition: 0.3s; }
+        .badge { background: #e1f5fe; color: var(--primary); font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 6px; align-self: flex-end; }
+        .card h3 { font-size: 18px; margin: 15px 0; color: #1a2a3a; min-height: 50px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .card p { font-size: 14px; color: #5a6c7d; line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
         .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f1f1; padding-top: 15px; font-size: 11px; font-weight: bold; }
-        .card-footer span { color: #aaa; text-transform: uppercase; }
-        .card-footer a { color: var(--primary); text-decoration: none; }
+        .card-footer a { color: var(--primary); text-decoration: none; border: 1px solid var(--primary); padding: 6px 12px; border-radius: 6px; }
         .page { display: none; }
         .page.active { display: block; }
     </style>
@@ -30,28 +29,29 @@
 
 <div class="container">
     <header>
-        <div>
-            <h1>Intelligence Pulse</h1>
-            <p style="color:#888; font-weight:bold; font-size: 12px;">• AI AGENT FEED • LIVE</p>
-        </div>
-        <div style="text-align: right; color: #aaa; font-size: 12px; font-weight: bold;">DATE: April 25, 2026</div>
+        <h1>Intelligence Pulse</h1>
+        <div style="text-align: right; color: #aaa; font-size: 12px; font-weight: bold;">LIVE FEED • 2026</div>
     </header>
 
     <div class="controls">
-        <button id="btn-news" class="btn active" onclick="switchTab('news')">NEWS STREAM</button>
+        <button id="btn-news" class="btn active" onclick="switchTab('news')">AI NEWS STREAM</button>
         <button id="btn-toolkit" class="btn" onclick="switchTab('toolkit')">AI TOOLKIT</button>
     </div>
 
     <div id="section-news" class="page active">
         <div id="news-container" class="grid">
-            <p>Scanning intelligence feeds...</p>
+            <p>Syncing latest AI intelligence...</p>
         </div>
     </div>
 
     <div id="section-toolkit" class="page">
         <div class="grid">
-            <div class="card"><span class="badge">TOOL</span><h3>Perplexity AI</h3><p>Real-time AI search for cited research.</p><div class="card-footer"><span>Search</span><a href="https://www.perplexity.ai" target="_blank">OPEN ↗</a></div></div>
-            <div class="card"><span class="badge">TOOL</span><h3>Claude.ai</h3><p>Advanced coding and reasoning assistant.</p><div class="card-footer"><span>Analysis</span><a href="https://claude.ai" target="_blank">OPEN ↗</a></div></div>
+            <div class="card"><span class="badge">SEARCH</span><h3>Perplexity AI</h3><p>Real-time AI search engine with cited research.</p><div class="card-footer"><span>V4.0</span><a href="https://www.perplexity.ai" target="_blank">OPEN ↗</a></div></div>
+            <div class="card"><span class="badge">CODING</span><h3>Cursor</h3><p>AI-first code editor for rapid development.</p><div class="card-footer"><span>PRO</span><a href="https://www.cursor.com" target="_blank">OPEN ↗</a></div></div>
+            <div class="card"><span class="badge">WRITING</span><h3>Claude.ai</h3><p>Leading model for technical writing and coding.</p><div class="card-footer"><span>3.5 SONNET</span><a href="https://claude.ai" target="_blank">OPEN ↗</a></div></div>
+            <div class="card"><span class="badge">GEN-AI</span><h3>ChatGPT</h3><p>Versatile multi-modal assistant (GPT-4o).</p><div class="card-footer"><span>OMNI</span><a href="https://chat.openai.com" target="_blank">OPEN ↗</a></div></div>
+            <div class="card"><span class="badge">RESEARCH</span><h3>Consensus</h3><p>AI search for 200M+ research papers.</p><div class="card-footer"><span>SCIENCE</span><a href="https://consensus.app" target="_blank">OPEN ↗</a></div></div>
+            <div class="card"><span class="badge">VIDEO</span><h3>Runway</h3><p>Professional AI video generation tools.</p><div class="card-footer"><span>GEN-3</span><a href="https://runwayml.com" target="_blank">OPEN ↗</a></div></div>
         </div>
     </div>
 </div>
@@ -79,31 +79,30 @@ apiKey: "AIzaSyAnnzBIK2Y0P1Gn8_4I6ZOu2z0P1LEeDk0",
         document.getElementById('btn-' + name).classList.add('active');
     }
 
-    // LISTENER: Specifically pulls the last 6 valid news items
-    db.ref('intelligence_pulse/news').limitToLast(20).on('value', (snap) => {
-        const data = snap.val();
+    // LISTENER: Pulls latest 6 valid news items
+    db.ref('intelligence_pulse/news').limitToLast(12).on('value', (snap) => {
         const container = document.getElementById('news-container');
+        const data = snap.val();
         if (data) {
             container.innerHTML = '';
-            const keys = Object.keys(data).reverse();
+            const items = Object.keys(data).map(key => data[key]).reverse();
+            
             let count = 0;
-
-            keys.forEach(key => {
-                const item = data[key];
-                // VALIDATION: Skip if the agent sent an empty/test card
-                if (!item.title || !item.summary || item.title === "AI Insight" || count >= 6) return;
-
+            items.forEach(item => {
+                if (!item.title || !item.summary || count >= 6) return;
                 count++;
-                const itemDate = item.date ? item.date.substring(0, 16) : "RECENT";
+
+                // Clean the summary text
+                const cleanSummary = item.summary.replace(/^(Here is|Professional update).*?\n/gi, '').trim();
 
                 container.innerHTML += `
                     <div class="card">
-                        <span class="badge">LIVE</span>
+                        <span class="badge">AI PULSE</span>
                         <h3>${item.title}</h3>
-                        <p>${item.summary}</p>
+                        <p>${cleanSummary}</p>
                         <div class="card-footer">
-                            <span>${itemDate}</span>
-                            <a href="${item.url}" target="_blank" rel="noopener noreferrer">READ FULL NEWS ↗</a>
+                            <span>${item.date || 'LATEST'}</span>
+                            <a href="${item.url}" target="_blank">FULL READ ↗</a>
                         </div>
                     </div>`;
             });
