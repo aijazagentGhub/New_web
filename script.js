@@ -1,135 +1,93 @@
-// 1. MASTER AI TOOL DATA (All current tools)
+// --- APRIL 2026 AI MASTER LIST ---
 const toolsData = [
-    { name: "GPT-5.5 (Action Engine)", usage: "LAUNCHED: Autonomous task execution across software interfaces.", category: "LLMs", isNew: true },
-    { name: "Claude 4.2 Mythos", usage: "NEW: Specialized for high-stakes BFSI security and reasoning.", category: "Security", isNew: true },
-    { name: "Gemini 2.0 Pro", usage: "NEW: 2M context window. Best for massive repository analysis.", category: "LLMs", isNew: true },
-    { name: "NotebookLM v3", usage: "Grounded research using private documents with zero hallucination.", category: "Research", isNew: false },
-    { name: "Cursor AI", usage: "AI-native IDE for managing complex code implementation flows.", category: "Development", isNew: false },
-    { name: "n8n (Agentic)", usage: "Self-hosted engine for building secure AI automation workflows.", category: "Automation", isNew: false },
-    { name: "Perplexity Pro", usage: "Real-time search with cited sources for technical research.", category: "Research", isNew: false },
-    { name: "Windsurf Cascade", usage: "Agentic IDE for handling multi-step engineering tasks.", category: "Development", isNew: false }
+    { name: "GPT-5.5 (Action Engine)", usage: "LAUNCHED YESTERDAY: Fully agentic. Can execute complex workflows across enterprise software autonomously.", category: "LLMs", isNew: true },
+    { name: "Claude Mythos Preview", usage: "NEW: Specialized for high-stakes cybersecurity and BFSI mainframe logic.", category: "Security", isNew: true },
+    { name: "Google Workspace Intelligence", usage: "NEW: Unified AI layer across Sheets, Meet, and Chrome for cross-app automation.", category: "Automation", isNew: true },
+    { name: "Claude 4.7 Opus", usage: "Released last week. The new gold standard for software engineering and 'pixel-perfect' vision.", category: "Development", isNew: true },
+    { name: "NotebookLM v3", usage: "Grounds AI in 50+ documents with zero hallucinations. Essential for research.", category: "Research", isNew: false },
+    { name: "MindBridge AI", usage: "Audit-grade risk detection for BFSI. Analyzes 100% of transactions for anomalies.", category: "Finance", isNew: false },
+    { name: "Cursor AI", usage: "AI-native IDE that understands entire codebases. Critical for Lead Engineers.", category: "Development", isNew: false },
+    { name: "n8n (Agentic)", usage: "The core engine for self-hosted, secure AI workflow automation on your Mac.", category: "Automation", isNew: false },
+    { name: "Perplexity Pro", usage: "Real-time search with cited sources. Matches GDPval benchmarks for knowledge work.", category: "Research", isNew: false },
+    { name: "ChatFin AI", usage: "Purpose-built agents for accounting, regulatory compliance, and financial analysis.", category: "Finance", isNew: false }
 ];
 
-// 2. NEWS DATA & FETCHING
-const newsData = []; // This gets populated by the RSS fetcher
-
-async function fetchLiveNews() {
-    const grid = document.getElementById('newsGrid');
-    if (!grid) return;
-
-    try {
-        const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent("https://blog.google/technology/ai/rss/")}`);
-        const data = await response.json();
-        
-        if (data.status === 'ok') {
-            const articles = data.items.map(item => ({
-                title: item.title,
-                brief: item.description.replace(/<[^>]*>?/gm, '').substring(0, 120) + "...",
-                link: item.link,
-                date: item.pubDate.split(' ')[0]
-            }));
-            
-            // Populate our global news array for export
-            newsData.length = 0; 
-            newsData.push(...articles);
-            renderNews(articles);
-        } else { throw new Error(); }
-    } catch (e) {
-        // Fallback if RSS fails
-        const fallback = [
-            { title: "OpenAI GPT-5.5 Released", brief: "Action Engine allows agents to navigate UI autonomously.", link: "#", date: "2026-04-25" },
-            { title: "Gemini 2.0 Integration", brief: "Google expands context window to 2M tokens for BFSI users.", link: "#", date: "2026-04-24" }
-        ];
-        newsData.push(...fallback);
-        renderNews(fallback);
-    }
-}
-
-// 3. BULLETPROOF CSV EXPORT ENGINE
-window.exportData = (type) => {
-    let rows = [];
-    let filename = "";
-
-    if (type === 'tools') {
-        rows = [["Tool Name", "Usage", "Category", "Status"]]; // CSV Headers
-        toolsData.forEach(t => {
-            rows.push([t.name, t.usage, t.category, t.isNew ? "NEW" : "Stable"]);
-        });
-        filename = "AI_Tools_Inventory.csv";
-    } else if (type === 'news') {
-        if (newsData.length === 0) {
-            alert("News is still loading. Please wait 2 seconds.");
-            return;
-        }
-        rows = [["Title", "Brief Summary", "Date"]]; // CSV Headers
-        newsData.forEach(n => {
-            rows.push([n.title, n.brief, n.date]);
-        });
-        filename = "Latest_News_Pulse.csv";
-    }
-
-    // Convert array to CSV string with proper escaping
-    const csvString = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")).join("\n");
-    
-    // Create Blob and trigger download
-    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement("a");
-    if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        link.setAttribute("href", url);
-        link.setAttribute("download", filename);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
+// --- TAB LOGIC ---
+window.switchTab = (name, el) => {
+    document.querySelectorAll('.tab-content, .tab-item').forEach(i => i.classList.remove('active'));
+    const target = document.getElementById(name + 'Tab') || document.getElementById('newsTab');
+    target.classList.add('active');
+    el.classList.add('active');
 };
 
-// 4. RENDERING & UI LOGIC
+window.addNewTab = () => {
+    const name = prompt("Enter Tab Name:");
+    if (!name) return;
+    const tabBar = document.getElementById('tabBar');
+    const addBtn = document.getElementById('addTabBtn');
+    
+    const newTab = document.createElement('div');
+    newTab.className = 'tab-item';
+    newTab.innerHTML = `
+        <span class="tab-label">${name}</span>
+        <div class="tab-controls">
+            <span onclick="renameTab(event, this)">✎</span>
+            <span onclick="deleteTab(event, this)">✕</span>
+        </div>
+    `;
+    newTab.onclick = () => switchTab('news', newTab); // Default to news view for now
+    tabBar.insertBefore(newTab, addBtn);
+};
+
+window.deleteTab = (e, btn) => {
+    e.stopPropagation();
+    if(confirm("Delete this tab?")) btn.closest('.tab-item').remove();
+};
+
+window.renameTab = (e, btn) => {
+    e.stopPropagation();
+    const label = btn.closest('.tab-item').querySelector('.tab-label');
+    const newName = prompt("Rename to:", label.innerText);
+    if(newName) label.innerText = newName;
+};
+
+// --- RENDER ENGINE ---
 function renderTools() {
     const hero = document.getElementById('latestToolRow');
     const list = document.getElementById('toolsCategorized');
     
-    hero.innerHTML = toolsData.filter(t => t.isNew).map(t => `
-        <div class="hero-tool">
-            <span class="new-pulse">JUST LAUNCHED</span>
+    // Sort tools: Newest first
+    const sortedTools = [...toolsData].sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
+
+    // Highlight the newest top 2 in the Hero
+    hero.innerHTML = sortedTools.filter(t => t.isNew).slice(0, 2).map(t => `
+        <div class="hero-tool interactive-card">
+            <div class="new-pulse">JUST LAUNCHED</div>
             <h3>${t.name}</h3>
             <p>${t.usage}</p>
         </div>
     `).join('');
 
-    const cats = [...new Set(toolsData.map(t => t.category))];
+    const cats = [...new Set(sortedTools.map(t => t.category))];
     list.innerHTML = cats.map(cat => `
         <div class="tool-section">
             <h3 class="section-title">${cat}</h3>
             <table class="tool-table">
-                ${toolsData.filter(t => t.category === cat).map(t => `
-                    <tr><td width="30%"><strong>${t.name}</strong></td><td>${t.usage}</td></tr>
+                ${sortedTools.filter(t => t.category === cat).map(t => `
+                    <tr class="${t.isNew ? 'new-row' : ''}">
+                        <td width="30%">
+                            <strong>${t.name}</strong>
+                            ${t.isNew ? '<span class="mini-tag">NEW</span>' : ''}
+                        </td>
+                        <td>${t.usage}</td>
+                    </tr>
                 `).join('')}
             </table>
         </div>
     `).join('');
 }
 
-function renderNews(articles) {
-    const grid = document.getElementById('newsGrid');
-    grid.innerHTML = articles.map(n => `
-        <div class="news-card">
-            <span class="card-tag">PULSE</span>
-            <h3>${n.title}</h3>
-            <p>${n.brief}</p>
-            <div class="card-footer"><span>${n.date}</span><a href="${n.link}" target="_blank">READ ↗</a></div>
-        </div>
-    `).join('');
-}
-
-window.switchTab = (name, el) => {
-    document.querySelectorAll('.tab-content, .tab-item').forEach(i => i.classList.remove('active'));
-    document.getElementById(name + 'Tab').classList.add('active');
-    el.classList.add('active');
-};
-
 document.addEventListener('DOMContentLoaded', () => {
     renderTools();
-    fetchLiveNews();
+    // (Add your News RSS fetcher here as well)
 });
