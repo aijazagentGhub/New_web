@@ -3,128 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligence Pulse | Master AI Hub</title>
+    <title>Intelligence Pulse | 2026 Master Hub</title>
     <style>
-        :root { --primary: #0077b6; --bg: #f4f9fc; --text: #1a2a3a; }
+        :root { --primary: #0077b6; --bg: #f4f9fc; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: #333; }
         .container { max-width: 1400px; margin: 0 auto; }
-        
-        header { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; border-left: 10px solid var(--primary); }
-        header h1 { font-size: 28px; text-transform: uppercase; letter-spacing: 1px; }
-
-        .tabs { display: flex; gap: 10px; margin-bottom: 25px; position: sticky; top: 10px; z-index: 100; background: var(--bg); padding: 10px 0; }
-        .tab-btn { padding: 12px 25px; border-radius: 8px; border: 1px solid #ddd; cursor: pointer; font-weight: 700; background: white; transition: 0.3s; }
-        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,119,182,0.2); }
-
+        header { background: white; padding: 25px; border-radius: 15px; margin-bottom: 25px; border-left: 8px solid var(--primary); display: flex; justify-content: space-between; align-items: center; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 25px; position: sticky; top: 10px; z-index: 100; }
+        .tab-btn { padding: 12px 25px; border-radius: 8px; border: 1px solid #ddd; cursor: pointer; font-weight: 700; background: white; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
         .page { display: none; }
         .page.active { display: block; }
-
-        /* News Styling: Strict 6 Cards */
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 25px; }
-        
-        /* Directory Styling: Massive List */
-        .dir-section { margin-bottom: 40px; }
-        .dir-header { font-size: 20px; font-weight: 800; color: var(--primary); margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-        .dir-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-
-        .card { background: white; padding: 20px; border-radius: 12px; border: 1px solid #eee; display: flex; flex-direction: column; transition: 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
-        .card h3 { font-size: 17px; margin-bottom: 8px; }
-        .card p { font-size: 13px; color: #666; margin-bottom: 15px; flex-grow: 1; }
-        .badge { font-size: 9px; font-weight: 900; padding: 3px 8px; border-radius: 4px; background: #e1f5fe; color: var(--primary); align-self: flex-start; margin-bottom: 10px; text-transform: uppercase; }
-        .card-link { font-size: 11px; font-weight: 800; text-decoration: none; color: var(--primary); border: 1px solid var(--primary); padding: 5px 10px; border-radius: 5px; align-self: flex-end; }
-        .card-link:hover { background: var(--primary); color: white; }
-
-        .footer-tag { font-size: 10px; color: #999; font-weight: bold; margin-top: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; border-top: 5px solid var(--primary); transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .badge { background: #e1f5fe; color: var(--primary); font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 4px; align-self: flex-start; margin-bottom: 12px; }
+        .card h3 { font-size: 18px; margin-bottom: 10px; line-height: 1.4; }
+        .card p { font-size: 14px; color: #666; line-height: 1.5; flex-grow: 1; margin-bottom: 15px; }
+        .dir-section { margin: 40px 0 20px; font-size: 22px; font-weight: 800; color: var(--primary); border-bottom: 2px solid #eee; }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <header>
-        <div><h1>Intelligence Pulse</h1><p style="color:var(--primary); font-size:12px; font-weight:bold;">SYSTEM VERSION: 4.25.26</p></div>
-        <div style="text-align:right;"><span id="live-clock" style="font-weight:bold; color:#aaa;">ONLINE</span></div>
-    </header>
-
+    <header><h1>INTELLIGENCE PULSE</h1><div id="live-clock">APRIL 25, 2026 | ONLINE</div></header>
     <div class="tabs">
         <button id="btn-news" class="tab-btn active" onclick="switchTab('news')">LATEST NEWS (6)</button>
         <button id="btn-dir" class="tab-btn" onclick="switchTab('dir')">ALL AI TOOLS DIRECTORY</button>
     </div>
 
-    <div id="page-news" class="page active">
-        <div id="news-container" class="news-grid">
-            <p style="padding: 20px;">Scanning latest intelligence pulses...</p>
-        </div>
-    </div>
+    <div id="page-news" class="page active"><div id="news-container" class="grid"></div></div>
 
     <div id="page-dir" class="page">
-        
-        <div class="dir-section">
-            <div class="dir-header">FRONTIER MODELS & CHAT</div>
-            <div class="dir-grid">
-                <div class="card"><span class="badge">OMNI</span><h3>ChatGPT (GPT-5.4)</h3><p>The global standard for multimodal AI assistant tasks.</p><a class="card-link" href="https://chatgpt.com" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">REASONING</span><h3>Claude 4.5</h3><p>Leading model for natural prose and complex logic.</p><a class="card-link" href="https://claude.ai" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">WORKSPACE</span><h3>Gemini 3.1 Pro</h3><p>Google's massive-context powerhouse (2M tokens).</p><a class="card-link" href="https://gemini.google.com" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">REAL-TIME</span><h3>Grok 4</h3><p>X-integrated AI with uncensored information access.</p><a class="card-link" href="https://x.ai" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">OPEN SOURCE</span><h3>DeepSeek V3</h3><p>High-performance open-weights model from China.</p><a class="card-link" href="https://deepseek.com" target="_blank">OPEN</a></div>
-            </div>
+        <div class="dir-section">FRONT-RUNNER MODELS</div>
+        <div class="grid">
+            <div class="card"><span class="badge">LLM</span><h3>ChatGPT (GPT-5)</h3><p>The global leader in conversational and multimodal AI tasks.</p></div>
+            <div class="card"><span class="badge">LLM</span><h3>Claude 4.5</h3><p>Anthropic's safety-first model for high-fidelity reasoning and coding.</p></div>
+            <div class="card"><span class="badge">LLM</span><h3>Gemini 3.1 Ultra</h3><p>Google's massive-context powerhouse integrated with Workspace.</p></div>
+            <div class="card"><span class="badge">LLM</span><h3>Grok 4</h3><p>Elon Musk's xAI model with real-time access to social data.</p></div>
         </div>
-
-        <div class="dir-section">
-            <div class="dir-header">DEVELOPER & CODING</div>
-            <div class="dir-grid">
-                <div class="card"><span class="badge">IDE</span><h3>Cursor</h3><p>AI-native code editor that handles full codebase context.</p><a class="card-link" href="https://cursor.com" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">AUTOCOMPLETE</span><h3>GitHub Copilot</h3><p>The original AI pair programmer for every major IDE.</p><a class="card-link" href="https://github.com/features/copilot" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">TERMINAL</span><h3>Claude Code</h3><p>Terminal-native agent for autonomous software engineering.</p><a class="card-link" href="https://anthropic.com" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">VIBE CODING</span><h3>Lovable / Bolt.new</h3><p>Build full web apps just by describing them in chat.</p><a class="card-link" href="https://lovable.dev" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">INFRA</span><h3>Replit Agent</h3><p>Deploy full-stack applications instantly with AI help.</p><a class="card-link" href="https://replit.com" target="_blank">OPEN</a></div>
-            </div>
+        <div class="dir-section">CODING & DEVELOPMENT</div>
+        <div class="grid">
+            <div class="card"><span class="badge">IDE</span><h3>Cursor</h3><p>The AI-native code editor that understands entire repositories.</p></div>
+            <div class="card"><span class="badge">IDE</span><h3>Google Antigravity</h3><p>Agent-first IDE for complex software engineering tasks.</p></div>
+            <div class="card"><span class="badge">REPO</span><h3>GitHub Copilot</h3><p>Industry-standard pair programmer for autocomplete and refactoring.</p></div>
+            <div class="card"><span class="badge">WEB</span><h3>Lovable / Bolt.new</h3><p>Vibe-coding tools that build and deploy web apps from text.</p></div>
         </div>
-
-        <div class="dir-section">
-            <div class="dir-header">RESEARCH & SEARCH</div>
-            <div class="dir-grid">
-                <div class="card"><span class="badge">SEARCH</span><h3>Perplexity AI</h3><p>AI research engine with real-time web citations.</p><a class="card-link" href="https://perplexity.ai" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">ACADEMIC</span><h3>Consensus</h3><p>Evidence-based search across 200 million research papers.</p><a class="card-link" href="https://consensus.app" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">KNOWLEDGE</span><h3>NotebookLM</h3><p>Google's tool for grounding AI in your own uploaded documents.</p><a class="card-link" href="https://notebooklm.google" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">WEB AI</span><h3>You.com</h3><p>Privacy-focused AI search with multi-model access.</p><a class="card-link" href="https://you.com" target="_blank">OPEN</a></div>
-            </div>
+        <div class="dir-section">VIDEO & CREATIVE</div>
+        <div class="grid">
+            <div class="card"><span class="badge">VIDEO</span><h3>Veo 3 / Sora 2</h3><p>The highest fidelity AI video generation for cinematic clips.</p></div>
+            <div class="card"><span class="badge">VIDEO</span><h3>Runway Gen-3</h3><p>Professional video editing and motion control for creators.</p></div>
+            <div class="card"><span class="badge">IMAGE</span><h3>Midjourney v7</h3><p>The gold standard for artistic and photorealistic AI image generation.</p></div>
+            <div class="card"><span class="badge">VOICE</span><h3>ElevenLabs</h3><p>Ultra-realistic AI voice synthesis and multilingual cloning.</p></div>
         </div>
-
-        <div class="dir-section">
-            <div class="dir-header">VIDEO, IMAGE & AUDIO</div>
-            <div class="dir-grid">
-                <div class="card"><span class="badge">CINEMATIC</span><h3>Veo 3 / Sora 2</h3><p>Top-tier AI video generation for high-fidelity clips.</p><a class="card-link" href="https://labs.google" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">CREATOR</span><h3>Runway Gen-3</h3><p>Professional video editing and motion control.</p><a class="card-link" href="https://runwayml.com" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">ART</span><h3>Midjourney v7</h3><p>The industry leader for high-quality artistic AI images.</p><a class="card-link" href="https://midjourney.com" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">VOICE</span><h3>ElevenLabs</h3><p>Ultra-realistic AI voice synthesis and cloning.</p><a class="card-link" href="https://elevenlabs.io" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">MUSIC</span><h3>Suno / Udio</h3><p>Generate full, high-fidelity songs from text prompts.</p><a class="card-link" href="https://suno.com" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">AVATARS</span><h3>HeyGen</h3><p>Create AI video spokespeople from text scripts.</p><a class="card-link" href="https://heygen.com" target="_blank">OPEN</a></div>
-            </div>
-        </div>
-
-        <div class="dir-section">
-            <div class="dir-header">WORKFLOW & AUTOMATION</div>
-            <div class="dir-grid">
-                <div class="card"><span class="badge">AGENTS</span><h3>Lindy.ai</h3><p>Build custom AI agents to handle complex business tasks.</p><a class="card-link" href="https://lindy.ai" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">CONNECTOR</span><h3>Zapier AI</h3><p>Automate workflows across 8,000+ different apps.</p><a class="card-link" href="https://zapier.com" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">PRODUCTIVITY</span><h3>Notion AI</h3><p>Writing, organizing, and project management in one hub.</p><a class="card-link" href="https://notion.so" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">MEETINGS</span><h3>Fathom / Fireflies</h3><p>AI meeting assistants that record and summarize calls.</p><a class="card-link" href="https://fathom.video" target="_blank">OPEN</a></div>
-                <div class="card"><span class="badge">MARKETING</span><h3>Jasper / Copy.ai</h3><p>Enterprise AI for consistent brand content and copy.</p><a class="card-link" href="https://jasper.ai" target="_blank">OPEN</a></div>
-            </div>
-        </div>
-
     </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
 <script>
-    // Paste your Firebase keys here
-    const firebaseConfig = {
-apiKey: "AIzaSyAnnzBIK2Y0P1Gn8_4I6ZOu2z0P1LEeDk0",
+    const firebaseConfig = 
+    { 
+        apiKey: "AIzaSyAnnzBIK2Y0P1Gn8_4I6ZOu2z0P1LEeDk0",
   authDomain: "aijazideas.firebaseapp.com",
   databaseURL: "https://aijazideas-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "aijazideas",
@@ -132,47 +72,36 @@ apiKey: "AIzaSyAnnzBIK2Y0P1Gn8_4I6ZOu2z0P1LEeDk0",
   messagingSenderId: "822948950064",
   appId: "1:822948950064:web:031df081b41175ef3a7df5"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    function switchTab(tab) {
+    function switchTab(t) {
         document.querySelectorAll('.page, .tab-btn').forEach(el => el.classList.remove('active'));
-        document.getElementById('page-' + tab).classList.add('active');
-        document.getElementById('btn-' + tab).classList.add('active');
+        document.getElementById('page-' + t).classList.add('active');
+        document.getElementById('btn-' + t).classList.add('active');
     }
 
-    // Dynamic News Listener: Pulls only the 6 most recent unique stories
-    db.ref('intelligence_pulse/news').limitToLast(20).on('value', (snap) => {
+    db.ref('intelligence_pulse/news').limitToLast(15).on('value', (snap) => {
         const container = document.getElementById('news-container');
         const data = snap.val();
         if (data) {
             container.innerHTML = '';
             const items = Object.keys(data).map(k => data[k]).reverse();
-            const seenTitles = new Set();
+            const seen = new Set();
             let count = 0;
-
             items.forEach(item => {
-                if (!item.title || !item.summary || seenTitles.has(item.title) || count >= 6) return;
-                
-                const cleanSummary = item.summary.replace(/^(Here is|Professional|This is).*?\n/gi, '').trim();
-                seenTitles.add(item.title);
-                count++;
-
+                if (!item.title || seen.has(item.title) || count >= 6) return;
+                seen.add(item.title); count++;
                 container.innerHTML += `
-                    <div class="card" style="border-top: 5px solid var(--primary); min-height: 250px;">
-                        <span class="badge">AI NEWS</span>
+                    <div class="card">
+                        <span class="badge">LATEST AI NEWS</span>
                         <h3>${item.title}</h3>
-                        <p>${cleanSummary}</p>
-                        <div class="card-footer">
-                            <a class="card-link" href="${item.url}" target="_blank">READ FULL STORY</a>
-                        </div>
+                        <p>${item.summary}</p>
+                        <a href="${item.url}" target="_blank" style="font-size:12px; font-weight:bold; color:var(--primary); text-decoration:none;">READ STORY ↗</a>
                     </div>`;
             });
         }
     });
-
-    document.getElementById('live-clock').innerText = new Date().toLocaleDateString() + ' | ONLINE';
 </script>
 </body>
 </html>
