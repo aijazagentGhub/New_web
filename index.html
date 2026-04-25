@@ -4,71 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intelligence Pulse | Executive Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-   <link rel="stylesheet" href="./styles.css">
+    <style>
+        /* Modern UI Styles */
+        :root {
+            --primary-blue: #0077b6;
+            --bg-light: #f4f9fc;
+            --card-white: #ffffff;
+            --text-dark: #1a2a3a;
+        }
+
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-light); color: var(--text-dark); margin: 0; padding: 40px; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .brand h1 { font-size: 32px; color: var(--primary-blue); margin: 0; }
+        .brand p { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+
+        .btn-group { display: flex; gap: 10px; }
+        .btn-outline { border: 1px solid var(--primary-blue); background: white; color: var(--primary-blue); padding: 8px 15px; border-radius: 20px; font-size: 12px; cursor: pointer; }
+
+        .tabs { display: flex; gap: 15px; margin-bottom: 30px; }
+        .tab { padding: 12px 25px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; background: white; color: #888; }
+        .tab.active { background: var(--primary-blue); color: white; }
+        .tab-add { border: 2px dashed #ccc; background: transparent; }
+
+        .section-title { border-left: 4px solid var(--primary-blue); padding-left: 15px; margin-bottom: 25px; font-size: 20px; }
+
+        /* Card Grid */
+        .news-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 25px; 
+        }
+
+        .pulse-card { 
+            background: var(--card-white); 
+            padding: 25px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 200px;
+        }
+
+        .badge { background: #e1f5fe; color: var(--primary-blue); font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; display: inline-block; width: fit-content; }
+        .pulse-card h3 { font-size: 18px; margin: 15px 0 10px 0; line-height: 1.4; color: #2c3e50; }
+        .pulse-card p { font-size: 14px; color: #5a6c7d; line-height: 1.6; margin-bottom: 20px; }
+        
+        .card-footer { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #999; border-top: 1px solid #f0f0f0; pt: 15px; }
+        .card-footer a { color: var(--primary-blue); text-decoration: none; font-weight: bold; }
+    </style>
 </head>
 <body>
-    <div class="sky-container">
-        <header class="main-header">
-            <div class="logo-area">
-                <h1 class="logo-text">Intelligence <span>Pulse</span></h1>
-                <p class="live-status" id="liveClock">● LIVE UPDATES • SATURDAY, APRIL 25, 2026</p>
-            </div>
-<div class="header-actions">
-    <button onclick="exportData('news')" class="export-btn">📥 Export News CSV</button>
-    <button onclick="exportData('tools')" class="export-btn">📥 Export Tools CSV</button>
-</div>
-        </header>
 
-        <nav class="tab-navigation" id="tabBar">
-            <div class="tab-item active" id="tab-news" onclick="switchTab('news', this)">
-                <span class="tab-label">NEWS STREAM</span>
-                <div class="tab-controls">
-                    <span class="edit-icon" onclick="renameTab(event, this)">✎</span>
-                </div>
-            </div>
-            <div class="tab-item" id="tab-tools" onclick="switchTab('tools', this)">
-                <span class="tab-label">AI TOOLKIT</span>
-                <div class="tab-controls">
-                    <span class="edit-icon" onclick="renameTab(event, this)">✎</span>
-                </div>
-            </div>
-            <button id="addTabBtn" class="new-tab-trigger" onclick="addNewTab()">+ Add Stream</button>
-        </nav>
+    <header>
+        <div class="brand">
+            <h1>Intelligence Pulse</h1>
+            <p id="current-date">• LIVE UPDATES • LOADING...</p>
+        </div>
+        <div class="btn-group">
+            <button class="btn-outline">📥 Export News CSV</button>
+            <button class="btn-outline">📥 Export Tools CSV</button>
+        </div>
+    </header>
 
-        <main id="newsTab" class="tab-content active">
-            <div class="feed-header">
-                <h2 class="section-title">Latest AI & BFSI Pulses</h2>
-                <span class="refresh-note">Auto-syncing via RSS...</span>
-            </div>
-            <div class="news-dense-grid" id="newsGrid">
-                <div class="loading-state">Initialising live feed...</div>
-            </div>
-        </main>
-
-        <main id="toolsTab" class="tab-content">
-            <div class="feed-header">
-                <h2 class="section-title">Global AI Tool Inventory</h2>
-            </div>
-            
-            <div id="latestToolRow" class="hero-container">
-                </div>
-
-            <div id="toolsCategorized" class="directory-container">
-                </div>
-        </main>
+    <div class="tabs">
+        <button class="tab active">NEWS STREAM</button>
+        <button class="tab">AI TOOLKIT</button>
+        <button class="tab tab-add">+ Add Stream</button>
     </div>
 
-    <script src="script.js"></script>
-    
+    <div class="section-title">Latest AI & BFSI Pulses</div>
+    <p style="font-size: 13px; color: #666; margin-top: -20px; margin-bottom: 30px;">Auto-syncing via n8n Agent...</p>
+
+    <div class="news-grid" id="news-container">
+        <p>Initializing connection to news desk...</p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <script>
-        // Inline helper to keep the clock current
-        function updateClock() {
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('liveClock').innerText = `● LIVE UPDATES • ${now.toLocaleDateString('en-US', options).toUpperCase()}`;
-        }
-        setInterval(updateClock, 60000);
+        // 1. CONFIGURATION
+        const firebaseConfig = {
+ apiKey: "AIzaSyAnnzBIK2Y0P1Gn8_4I6ZOu2z0P1LEeDk0",
+  authDomain: "aijazideas.firebaseapp.com",
+  databaseURL: "https://aijazideas-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "aijazideas",
+  storageBucket: "aijazideas.firebasestorage.app",
+  messagingSenderId: "822948950064",
+  appId: "1:822948950064:web:031df081b41175ef3a7df5"
+        };
+
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        const db = firebase.database();
+
+        // Set Date
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').innerText = `• LIVE UPDATES • ${new Date().toLocaleDateString('en-US', options).toUpperCase()}`;
+
+        // 2. AGENT LISTENER
+        // This watches the 'intelligence_pulse/news' folder in Firebase
+        db.ref('intelligence_pulse/news').on('value', (snapshot) => {
+            const container = document.getElementById('news-container');
+            const data = snapshot.val();
+            
+            if (!data) {
+                container.innerHTML = "<p>No news pulses found. Ensure n8n is pushing data to 'intelligence_pulse/news'.</p>";
+                return;
+            }
+
+            container.innerHTML = ""; // Clear loader
+
+            // Convert object to array and reverse so newest is first
+            const articles = Object.keys(data).map(key => data[key]).reverse();
+
+            articles.forEach(article => {
+                container.innerHTML += `
+                    <div class="pulse-card">
+                        <div>
+                            <span class="badge">PULSE</span>
+                            <h3>${article.title}</h3>
+                            <p>${article.summary}</p>
+                        </div>
+                        <div class="card-footer">
+                            <span>${article.date || 'Today'}</span>
+                            <a href="${article.url || '#'}" target="_blank">READ ↗</a>
+                        </div>
+                    </div>
+                `;
+            });
+        });
     </script>
 </body>
 </html>
