@@ -1,15 +1,16 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+    <title>Intelligence Pulse</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intelligence Pulse | Executive Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-   <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="sky-container">
-        <header class="main-header">
+<div class="sky-container">
+<header class="main-header">
+            <h1 class="logo-text">Intelligence <span>Pulse</span></h1>
             <div class="logo-area">
                 <h1 class="logo-text">Intelligence <span>Pulse</span></h1>
                 <p class="live-status" id="liveClock">● LIVE UPDATES • SATURDAY, APRIL 25, 2026</p>
@@ -18,25 +19,33 @@
                 <button onclick="exportData('news')" class="export-btn">📥 Export News</button>
                 <button onclick="exportData('tools')" class="export-btn">📥 Export Tools</button>
             </div>
-        </header>
+</header>
 
+        <nav class="tab-navigation">
+            <div class="tab-item active" onclick="switchTab('news', this)">
+                <span class="tab-label">NEWS</span>
+                <span class="rename-trigger" onclick="renameTab(event, this)">✎</span>
         <nav class="tab-navigation" id="tabBar">
             <div class="tab-item active" id="tab-news" onclick="switchTab('news', this)">
                 <span class="tab-label">NEWS STREAM</span>
                 <div class="tab-controls">
                     <span class="edit-icon" onclick="renameTab(event, this)">✎</span>
                 </div>
-            </div>
+</div>
+            <div class="tab-item" onclick="switchTab('tools', this)">
+                <span class="tab-label">AI TOOLS</span>
+                <span class="rename-trigger" onclick="renameTab(event, this)">✎</span>
             <div class="tab-item" id="tab-tools" onclick="switchTab('tools', this)">
                 <span class="tab-label">AI TOOLKIT</span>
                 <div class="tab-controls">
                     <span class="edit-icon" onclick="renameTab(event, this)">✎</span>
                 </div>
-            </div>
+</div>
             <button id="addTabBtn" class="new-tab-trigger" onclick="addNewTab()">+ Add Stream</button>
-        </nav>
+</nav>
 
-        <main id="newsTab" class="tab-content active">
+<main id="newsTab" class="tab-content active">
+            <div class="news-dense-grid" id="newsGrid"></div>
             <div class="feed-header">
                 <h2 class="section-title">Latest AI & BFSI Pulses</h2>
                 <span class="refresh-note">Auto-syncing via RSS...</span>
@@ -44,9 +53,11 @@
             <div class="news-dense-grid" id="newsGrid">
                 <div class="loading-state">Initialising live feed...</div>
             </div>
-        </main>
+</main>
 
-        <main id="toolsTab" class="tab-content">
+<main id="toolsTab" class="tab-content">
+            <div id="latestToolRow"></div>
+            <div id="toolsCategorized"></div>
             <div class="feed-header">
                 <h2 class="section-title">Global AI Tool Inventory</h2>
             </div>
@@ -56,10 +67,10 @@
 
             <div id="toolsCategorized" class="directory-container">
                 </div>
-        </main>
-    </div>
+</main>
+</div>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
     
     <script>
         // Inline helper to keep the clock current
