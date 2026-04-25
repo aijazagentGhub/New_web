@@ -3,58 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligence Pulse | 2026 Master Hub</title>
+    <title>Intelligence Pulse | Master Hub</title>
     <style>
         :root { --primary: #0077b6; --bg: #f4f9fc; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: #333; }
         .container { max-width: 1400px; margin: 0 auto; }
-        header { background: white; padding: 25px; border-radius: 15px; margin-bottom: 25px; border-left: 8px solid var(--primary); display: flex; justify-content: space-between; align-items: center; }
+        header { background: white; padding: 30px; border-radius: 15px; margin-bottom: 25px; border-left: 10px solid var(--primary); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .tabs { display: flex; gap: 10px; margin-bottom: 25px; position: sticky; top: 10px; z-index: 100; }
-        .tab-btn { padding: 12px 25px; border-radius: 8px; border: 1px solid #ddd; cursor: pointer; font-weight: 700; background: white; }
-        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .tab-btn { padding: 12px 25px; border-radius: 8px; border: 1px solid #ddd; cursor: pointer; font-weight: 700; background: white; transition: 0.3s; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,119,182,0.2); }
         .page { display: none; }
         .page.active { display: block; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
-        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; border-top: 5px solid var(--primary); transition: 0.3s; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 25px; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; border-top: 5px solid var(--primary); min-height: 300px; transition: 0.3s; }
         .card:hover { transform: translateY(-5px); }
         .badge { background: #e1f5fe; color: var(--primary); font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 4px; align-self: flex-start; margin-bottom: 12px; }
         .card h3 { font-size: 18px; margin-bottom: 10px; line-height: 1.4; }
         .card p { font-size: 14px; color: #666; line-height: 1.5; flex-grow: 1; margin-bottom: 15px; }
-        .dir-section { margin: 40px 0 20px; font-size: 22px; font-weight: 800; color: var(--primary); border-bottom: 2px solid #eee; }
+        .dir-section { margin: 40px 0 20px; font-size: 24px; font-weight: 800; color: var(--primary); border-bottom: 2px solid #eee; }
     </style>
 </head>
 <body>
 <div class="container">
-    <header><h1>INTELLIGENCE PULSE</h1><div id="live-clock">APRIL 25, 2026 | ONLINE</div></header>
+    <header><h1>INTELLIGENCE PULSE</h1><div style="font-weight:bold; color:#999;">LIVE FEED • 2026</div></header>
     <div class="tabs">
         <button id="btn-news" class="tab-btn active" onclick="switchTab('news')">LATEST NEWS (6)</button>
         <button id="btn-dir" class="tab-btn" onclick="switchTab('dir')">ALL AI TOOLS DIRECTORY</button>
     </div>
 
-    <div id="page-news" class="page active"><div id="news-container" class="grid"></div></div>
+    <div id="page-news" class="page active"><div id="news-container" class="grid"><p>Scanning news feeds...</p></div></div>
 
     <div id="page-dir" class="page">
         <div class="dir-section">FRONT-RUNNER MODELS</div>
         <div class="grid">
-            <div class="card"><span class="badge">LLM</span><h3>ChatGPT (GPT-5)</h3><p>The global leader in conversational and multimodal AI tasks.</p></div>
-            <div class="card"><span class="badge">LLM</span><h3>Claude 4.5</h3><p>Anthropic's safety-first model for high-fidelity reasoning and coding.</p></div>
-            <div class="card"><span class="badge">LLM</span><h3>Gemini 3.1 Ultra</h3><p>Google's massive-context powerhouse integrated with Workspace.</p></div>
-            <div class="card"><span class="badge">LLM</span><h3>Grok 4</h3><p>Elon Musk's xAI model with real-time access to social data.</p></div>
+            <div class="card"><span class="badge">OMNI</span><h3>ChatGPT (GPT-5)</h3><p>The global leader for multimodal tasks, data analysis, and all-purpose reasoning.</p></div>
+            <div class="card"><span class="badge">LOGIC</span><h3>Claude 4.5</h3><p>Highest-rated model for natural prose, complex technical writing, and safety-focused logic.</p></div>
+            <div class="card"><span class="badge">CONTEXT</span><h3>Gemini 3.1 Ultra</h3><p>Google's massive 2M-token context model integrated deeply with the Workspace ecosystem.</p></div>
+            <div class="card"><span class="badge">REAL-TIME</span><h3>Grok 4</h3><p>X-integrated assistant specializing in real-time information and uncensored responses.</p></div>
         </div>
-        <div class="dir-section">CODING & DEVELOPMENT</div>
+        <div class="dir-section">CODING & AGENTS</div>
         <div class="grid">
-            <div class="card"><span class="badge">IDE</span><h3>Cursor</h3><p>The AI-native code editor that understands entire repositories.</p></div>
-            <div class="card"><span class="badge">IDE</span><h3>Google Antigravity</h3><p>Agent-first IDE for complex software engineering tasks.</p></div>
-            <div class="card"><span class="badge">REPO</span><h3>GitHub Copilot</h3><p>Industry-standard pair programmer for autocomplete and refactoring.</p></div>
-            <div class="card"><span class="badge">WEB</span><h3>Lovable / Bolt.new</h3><p>Vibe-coding tools that build and deploy web apps from text.</p></div>
+            <div class="card"><span class="badge">IDE</span><h3>Cursor</h3><p>The AI-native code editor that deeply understands your entire codebase for instant building.</p></div>
+            <div class="card"><span class="badge">AUTOMATION</span><h3>Lindy</h3><p>The most advanced platform for building autonomous agents to handle complex business workflows.</p></div>
+            <div class="card"><span class="badge">LOW-CODE</span><h3>Bolt.new / Lovable</h3><p>Vibe-coding leaders that build full web applications from simple conversational descriptions.</p></div>
+            <div class="card"><span class="badge">TERMINAL</span><h3>Claude Code</h3><p>Command-line agent for autonomous software engineering and multi-file code editing.</p></div>
         </div>
-        <div class="dir-section">VIDEO & CREATIVE</div>
+        <div class="dir-section">SEARCH & CREATIVE</div>
         <div class="grid">
-            <div class="card"><span class="badge">VIDEO</span><h3>Veo 3 / Sora 2</h3><p>The highest fidelity AI video generation for cinematic clips.</p></div>
-            <div class="card"><span class="badge">VIDEO</span><h3>Runway Gen-3</h3><p>Professional video editing and motion control for creators.</p></div>
-            <div class="card"><span class="badge">IMAGE</span><h3>Midjourney v7</h3><p>The gold standard for artistic and photorealistic AI image generation.</p></div>
-            <div class="card"><span class="badge">VOICE</span><h3>ElevenLabs</h3><p>Ultra-realistic AI voice synthesis and multilingual cloning.</p></div>
+            <div class="card"><span class="badge">SEARCH</span><h3>Perplexity AI</h3><p>Research-first search engine providing real-time, cited answers that replace standard search.</p></div>
+            <div class="card"><span class="badge">VIDEO</span><h3>Veo 3 / Sora 2</h3><p>Cinematic-grade AI video generation with consistent physics and motion control.</p></div>
+            <div class="card"><span class="badge">AUDIO</span><h3>ElevenLabs</h3><p>State-of-the-art voice synthesis and multilingual cloning for professional narration.</p></div>
+            <div class="card"><span class="badge">VISUAL</span><h3>Midjourney v7</h3><p>The industry benchmark for high-quality, stylized AI image generation and artistic control.</p></div>
         </div>
     </div>
 </div>
@@ -62,16 +62,13 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script>
-    const firebaseConfig = 
-    { 
-        apiKey: "AIzaSyAnnzBIK2Y0P1Gn8_4I6ZOu2z0P1LEeDk0",
+    const firebaseConfig = { apiKey: "AIzaSyAnnzBIK2Y0P1Gn8_4I6ZOu2z0P1LEeDk0",
   authDomain: "aijazideas.firebaseapp.com",
   databaseURL: "https://aijazideas-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "aijazideas",
   storageBucket: "aijazideas.firebasestorage.app",
   messagingSenderId: "822948950064",
-  appId: "1:822948950064:web:031df081b41175ef3a7df5"
-    };
+  appId: "1:822948950064:web:031df081b41175ef3a7df5"};
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
